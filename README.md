@@ -83,6 +83,14 @@ install.packages(c(
 
 ---
 
+## Live URL
+
+**https://sizepredictionml.shinyapps.io/ML-Size-Prediction/**
+
+Deployed via shinyapps.io (free tier). No EC2 required — spec only requires a working deployed app.
+
+---
+
 ## How to Run
 
 All commands are run from the project root directory.
@@ -168,8 +176,8 @@ shiny::runApp(".")
 | Phase 4 — Model Training | ✅ Complete |
 | Phase 5 — Model Evaluation | ✅ Complete |
 | Phase 6 — Helper Utilities | ✅ Complete |
-| Phase 7 — R Shiny App | 🔄 In progress (live predictions) |
-| Phase 8 — EC2 Deployment | ⬜ Not started |
+| Phase 7 — R Shiny App | ✅ Complete |
+| Phase 8 — Deployment | ✅ Complete (shinyapps.io) |
 | Phase 9 — Report | ⬜ Not started |
 
 ---
