@@ -290,7 +290,12 @@ ui <- page_navbar(
       div(class = "row g-3 mb-4",
         div(class = "col-12",
           div(class = "card p-4",
-            div(class = "section-title", "Size Class Distribution"),
+            div(class = "d-flex justify-content-between align-items-center mb-3",
+              div(class = "section-title mb-0", "Size Class Distribution"),
+              downloadButton("download_plots", "Download All Plots",
+                class = "btn btn-outline-secondary btn-sm",
+                icon  = icon("download"))
+            ),
             plotlyOutput("size_dist_chart", height = "320px")
           )
         )
@@ -697,6 +702,16 @@ server <- function(input, output, session) {
   output$weight_chart <- renderPlotly(make_hist("weight", "Weight (kg)", "#3B82F6"))
   output$height_chart <- renderPlotly(make_hist("height", "Height (cm)", "#06B6D4"))
   output$age_chart    <- renderPlotly(make_hist("age",    "Age",         "#10B981"))
+
+  # ---- Download EDA plots as zip ----
+  output$download_plots <- downloadHandler(
+    filename = function() paste0("eda_plots_", format(Sys.Date(), "%Y%m%d"), ".zip"),
+    content  = function(file) {
+      plots <- list.files("outputs/figures", pattern = "\\.png$", full.names = TRUE)
+      zip(file, files = plots, flags = "-j")
+    },
+    contentType = "application/zip"
+  )
 }
 
 # =============================================================================
