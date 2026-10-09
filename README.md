@@ -164,7 +164,7 @@ shiny::runApp(".")
 |---|---|
 | Phase 1 — Data Inspection | ✅ Complete |
 | Phase 2 — Data Cleaning | ✅ Complete |
-| Phase 3 — EDA | 🔄 Next session |
+| Phase 3 — EDA | ✅ Complete |
 | Phase 4 — Model Training | ⬜ Not started |
 | Phase 5 — Model Evaluation | ⬜ Not started |
 | Phase 6 — Helper Utilities | ✅ Complete |

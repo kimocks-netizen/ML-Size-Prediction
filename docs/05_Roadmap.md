@@ -282,7 +282,7 @@ outputs/
 |---|---|---|
 | Phase 1 — Data Inspection | ✅ Complete | `FEAT: Phase 2` (46e6f7a) |
 | Phase 2 — Data Cleaning | ✅ Complete | `FEAT: Phase 2` (46e6f7a) |
-| Phase 3 — EDA | 🔄 Next session | — |
+| Phase 3 — EDA | ✅ Complete | `FEAT: Phase 3` |
 | Phase 4 — Model Training | ⬜ Not started | — |
 | Phase 5 — Model Evaluation | ⬜ Not started | — |
 | Phase 6 — Helper Utilities | ✅ Complete | `FEAT: Phase 2` (46e6f7a) |
