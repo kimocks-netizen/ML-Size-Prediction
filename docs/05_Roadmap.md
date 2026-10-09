@@ -278,14 +278,14 @@ outputs/
 
 ## Current Status
 
-| Phase | Status |
-|---|---|
-| Phase 1 — Data Inspection | ⬜ Not started |
-| Phase 2 — Data Cleaning | ⬜ Not started |
-| Phase 3 — EDA | ⬜ Not started |
-| Phase 4 — Model Training | ⬜ Not started |
-| Phase 5 — Model Evaluation | ⬜ Not started |
-| Phase 6 — Helper Utilities | ⬜ Not started |
-| Phase 7 — R Shiny App | ⬜ Not started |
-| Phase 8 — EC2 Deployment | ⬜ Not started |
-| Phase 9 — Report | ⬜ Not started |
+| Phase | Status | Commit |
+|---|---|---|
+| Phase 1 — Data Inspection | ✅ Complete | `FEAT: Phase 2` (46e6f7a) |
+| Phase 2 — Data Cleaning | ✅ Complete | `FEAT: Phase 2` (46e6f7a) |
+| Phase 3 — EDA | 🔄 Next session | — |
+| Phase 4 — Model Training | ⬜ Not started | — |
+| Phase 5 — Model Evaluation | ⬜ Not started | — |
+| Phase 6 — Helper Utilities | ✅ Complete | `FEAT: Phase 2` (46e6f7a) |
+| Phase 7 — R Shiny App | 🔄 In progress (demo mode) | `FEAT: Phase 2` (46e6f7a) |
+| Phase 8 — EC2 Deployment | ⬜ Not started | — |
+| Phase 9 — Report | ⬜ Not started | — |
