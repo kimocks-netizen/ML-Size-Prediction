@@ -1,0 +1,267 @@
+/* ============================================================
+   styles.css — Dark Professional Theme
+   Clothing Size Prediction App
+   ============================================================ */
+
+/* ---- Base ---- */
+body {
+  background-color: #0F172A;
+  color: #F8FAFC;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ---- Navbar ---- */
+.navbar {
+  background-color: #1E293B !important;
+  border-bottom: 1px solid #3B82F6;
+  padding: 0.75rem 1.5rem;
+}
+
+.navbar-brand {
+  color: #F8FAFC !important;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+}
+
+.nav-link {
+  color: #94A3B8 !important;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #3B82F6 !important;
+}
+
+/* ---- Cards ---- */
+.card {
+  background-color: #1E293B;
+  border: 1px solid #334155;
+  border-radius: 12px;
+}
+
+.card-header {
+  background-color: #1E293B;
+  border-bottom: 1px solid #334155;
+  font-weight: 600;
+  color: #F8FAFC;
+  padding: 1rem 1.25rem;
+}
+
+/* ---- Result card ---- */
+.result-card {
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  border: 2px solid #3B82F6;
+  border-radius: 16px;
+  text-align: center;
+  padding: 2rem;
+}
+
+.result-size {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #3B82F6;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.result-label {
+  font-size: 0.85rem;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.result-confidence {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+}
+
+/* ---- Confidence badges ---- */
+.badge-high   { background-color: #10B981; color: #fff; }
+.badge-medium { background-color: #F59E0B; color: #fff; }
+.badge-low    { background-color: #F43F5E; color: #fff; }
+
+.confidence-badge {
+  display: inline-block;
+  padding: 0.35em 0.85em;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ---- Inputs ---- */
+.form-control,
+.form-select {
+  background-color: #0F172A;
+  border: 1px solid #334155;
+  color: #F8FAFC;
+  border-radius: 8px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #0F172A;
+  border-color: #3B82F6;
+  color: #F8FAFC;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.form-label {
+  color: #94A3B8;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ---- Buttons ---- */
+.btn-primary {
+  background-color: #3B82F6;
+  border-color: #3B82F6;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover {
+  background-color: #2563EB;
+  border-color: #2563EB;
+  transform: translateY(-1px);
+}
+
+.btn-predict {
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.btn-outline-success {
+  border-color: #10B981;
+  color: #10B981;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.btn-outline-success:hover {
+  background-color: #10B981;
+  color: #fff;
+}
+
+.btn-outline-danger {
+  border-color: #F43F5E;
+  color: #F43F5E;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.btn-outline-danger:hover {
+  background-color: #F43F5E;
+  color: #fff;
+}
+
+/* ---- Stat boxes (dashboard) ---- */
+.stat-box {
+  background-color: #1E293B;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #3B82F6;
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.25rem;
+}
+
+/* ---- Tables ---- */
+.dataTables_wrapper,
+table.dataTable {
+  color: #F8FAFC !important;
+}
+
+table.dataTable thead th {
+  background-color: #1E293B;
+  color: #94A3B8;
+  border-bottom: 1px solid #334155;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+table.dataTable tbody tr {
+  background-color: #0F172A;
+}
+
+table.dataTable tbody tr:hover {
+  background-color: #1E293B !important;
+}
+
+.dataTables_info,
+.dataTables_length label,
+.dataTables_filter label {
+  color: #94A3B8 !important;
+  font-size: 0.85rem;
+}
+
+/* ---- Probability bars ---- */
+.prob-bar-container {
+  margin: 0.4rem 0;
+}
+
+.prob-size-label {
+  font-size: 0.85rem;
+  color: #94A3B8;
+  width: 45px;
+  display: inline-block;
+}
+
+/* ---- Section headings ---- */
+.section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #334155;
+}
+
+/* ---- Limitation note ---- */
+.limitation-note {
+  background-color: #1E293B;
+  border-left: 3px solid #F59E0B;
+  padding: 0.75rem 1rem;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.85rem;
+  color: #94A3B8;
+}
+
+/* ---- Plotly dark override ---- */
+.js-plotly-plot .plotly {
+  background-color: transparent !important;
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0F172A; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #3B82F6; }

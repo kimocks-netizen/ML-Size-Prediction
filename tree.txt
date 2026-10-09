@@ -1,0 +1,33 @@
+clothing-size-prediction/
+├── README.md
+├── .gitignore
+├── app.R
+├── data/
+│   ├── final_test.csv
+│   │   
+│   ├── clothing_clean.csv
+│   │   
+│   └── prediction_feedback.csv
+├── R/
+│   ├── 01_inspect_data.R
+│   ├── 02_clean_data.R
+│   ├── 03_exploratory_analysis.R
+│   ├── 04_train_models.R
+│   ├── 05_evaluate_models.R
+│   ├── prediction.R
+│   └── helpers.R
+├── models/
+│   ├── logistic_model.rds
+│   ├── decision_tree_model.rds
+│   ├── random_forest_model.rds
+│   └── best_model.rds
+├── outputs/
+│   ├── figures/
+│   ├── model_metrics.csv
+│   └── confusion_matrix.csv
+├── www/
+│   ├── styles.css
+│   └── logo/
+├── screenshots/
+├── report/
+└── docs/

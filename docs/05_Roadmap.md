@@ -151,6 +151,89 @@ Data Pipeline → EDA → Model Training → Evaluation → Shiny App → EC2 De
 
 ---
 
+## R Packages
+
+### Installed & Verified (R 4.6.1)
+
+| Package | Version | Role | Phase Used |
+|---|---|---|---|
+| `tidyverse` | 2.x | Data wrangling, `dplyr`, `ggplot2`, `readr` | 1–5 |
+| `caret` | 7.x | Stratified train/test split, confusion matrix | 4–5 |
+| `ranger` | latest | Random Forest with probability output + class weights | 4–5 |
+| `rpart` | built-in | Decision Tree classifier | 4–5 |
+| `rpart.plot` | latest | Decision Tree visualisation | 3, 7 |
+| `nnet` | built-in | Multinomial Logistic Regression baseline | 4–5 |
+| `bslib` | latest | Shiny Bootstrap 5 theming (dark mode) | 7 |
+| `shiny` | 1.14+ | Web application framework | 7 |
+| `DT` | latest | Interactive data tables in app | 7 |
+| `plotly` | latest | Interactive probability bar charts | 7 |
+| `scales` | latest | Axis and percentage formatting in plots | 3, 7 |
+| `viridis` | latest | Accessible colour scales for EDA plots | 3 |
+
+### Installation Command
+
+```r
+install.packages(c(
+  'tidyverse', 'caret', 'ranger', 'rpart', 'rpart.plot',
+  'nnet', 'bslib', 'shiny', 'DT', 'plotly', 'scales', 'viridis'
+), repos = 'https://cloud.r-project.org')
+```
+
+> System dependency note: `tidyverse` requires `harfbuzz` and `fribidi` on macOS.
+> Install via: `brew install harfbuzz fribidi` before installing `tidyverse`.
+
+---
+
+## Shiny Theme
+
+**Selected theme: Dark Professional (`bslib` Bootstrap 5)**
+
+### Colour Palette
+
+| Role | Name | Hex |
+|---|---|---|
+| Page background | Deep navy | `#0F172A` |
+| Card / surface | Slate dark | `#1E293B` |
+| Primary accent | Electric blue | `#3B82F6` |
+| Secondary accent | Cyan | `#06B6D4` |
+| Success / high confidence | Emerald | `#10B981` |
+| Warning / medium confidence | Amber | `#F59E0B` |
+| Danger / error / low confidence | Rose | `#F43F5E` |
+| Primary text | Off-white | `#F8FAFC` |
+| Muted text / labels | Slate grey | `#94A3B8` |
+
+### Theme Definition (used in `app.R`)
+
+```r
+library(bslib)
+
+app_theme <- bs_theme(
+  version    = 5,
+  bg         = "#0F172A",
+  fg         = "#F8FAFC",
+  primary    = "#3B82F6",
+  secondary  = "#06B6D4",
+  success    = "#10B981",
+  warning    = "#F59E0B",
+  danger     = "#F43F5E",
+  base_font  = font_google("Inter"),
+  heading_font = font_google("Inter")
+)
+```
+
+### Why this theme
+
+- Dark backgrounds make probability bar charts and result cards visually prominent
+- Blue/cyan accent pair is standard in professional BI tools
+- The success/warning/danger trio maps directly onto prediction confidence levels:
+  - High confidence (≥ 60%) → Emerald green
+  - Medium confidence (30–59%) → Amber
+  - Low confidence (< 30%) → Rose red
+- Inter font is clean, readable, and professional at all sizes
+- All colours pass WCAG AA contrast ratio on the dark background
+
+---
+
 ## Key Decisions Locked
 
 | Decision | Choice | Reason |
@@ -161,6 +244,8 @@ Data Pipeline → EDA → Model Training → Evaluation → Shiny App → EC2 De
 | Class imbalance strategy | Class weights in `ranger` | No synthetic data risk, simple to implement |
 | Model selection metric | Macro F1 | Accounts for XXL imbalance better than accuracy |
 | Shiny UI package | `bslib` | Modern theming, actively maintained |
+| Shiny theme | Dark Professional | Visually prominent, BI-appropriate |
+| Confidence colour coding | Emerald / Amber / Rose | Maps naturally to high / medium / low confidence |
 | Gradient Boosting | Excluded | Adds complexity for marginal gain given word count |
 | LLM / Bedrock | Excluded | Not appropriate for tabular classification |
 | AWS services | EC2 only | Simplest viable hosting for prototype |
