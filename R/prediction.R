@@ -4,6 +4,7 @@
 # =============================================================================
 
 source("R/helpers.R")
+library(nnet)
 
 # Load the best saved model once at startup
 load_model <- function(path = "models/best_model.rds") {
@@ -15,10 +16,14 @@ load_model <- function(path = "models/best_model.rds") {
 predict_size <- function(model, weight, age, height) {
   new_obs <- data.frame(weight = weight, age = age, height = height)
 
-  # ranger returns a prediction object with $predictions matrix
-  raw <- predict(model, data = new_obs)$predictions
-
-  probs       <- as.numeric(raw[1, ])
+  if (inherits(model, "ranger")) {
+    raw   <- predict(model, data = new_obs)$predictions
+    probs <- as.numeric(raw[1, ])
+  } else {
+    # multinom / nnet
+    raw   <- predict(model, newdata = new_obs, type = "probs")
+    probs <- as.numeric(raw)
+  }
   names(probs) <- SIZE_LEVELS
 
   top_idx     <- which.max(probs)
