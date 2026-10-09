@@ -9,6 +9,7 @@ library(dplyr)
 library(ggplot2)
 library(plotly)
 library(DT)
+library(nnet)
 
 source("R/helpers.R")
 source("R/prediction.R")
@@ -324,7 +325,76 @@ ui <- page_navbar(
     )
   ),
 
-  # ---- Tab 5: About ----
+  # ---- Tab 5: Feedback & Training Data ----
+  nav_panel(
+    title = "Feedback",
+    icon  = icon("database"),
+
+    div(class = "container-fluid py-4",
+
+      # Stat row
+      div(class = "row g-3 mb-4",
+        div(class = "col-6 col-md-3",
+          div(class = "stat-box",
+            div(class = "stat-value", uiOutput("fb_total")),
+            div(class = "stat-label", "Total Submissions")
+          )
+        ),
+        div(class = "col-6 col-md-3",
+          div(class = "stat-box",
+            div(class = "stat-value", uiOutput("fb_correct")),
+            div(class = "stat-label", "Correct Predictions")
+          )
+        ),
+        div(class = "col-6 col-md-3",
+          div(class = "stat-box",
+            div(class = "stat-value", uiOutput("fb_incorrect")),
+            div(class = "stat-label", "Incorrect Predictions")
+          )
+        ),
+        div(class = "col-6 col-md-3",
+          div(class = "stat-box",
+            div(class = "stat-value", uiOutput("fb_accuracy")),
+            div(class = "stat-label", "Feedback Accuracy")
+          )
+        )
+      ),
+
+      # Retraining readiness meter
+      div(class = "row g-3 mb-4",
+        div(class = "col-12",
+          div(class = "card p-4",
+            div(class = "d-flex justify-content-between align-items-center mb-2",
+              div(class = "section-title mb-0", "Retraining Readiness"),
+              uiOutput("fb_ready_badge")
+            ),
+            p(style = "color:#94A3B8; font-size:0.85rem; margin-bottom:0.75rem;",
+              "Model retraining is recommended once 50 feedback submissions are collected."),
+            uiOutput("fb_progress_bar"),
+            p(style = "color:#94A3B8; font-size:0.8rem; margin-top:0.5rem;",
+              uiOutput("fb_progress_label"))
+          )
+        )
+      ),
+
+      # Feedback log table
+      div(class = "row g-3",
+        div(class = "col-12",
+          div(class = "card p-4",
+            div(class = "d-flex justify-content-between align-items-center mb-3",
+              div(class = "section-title mb-0", "Feedback Log"),
+              actionButton("fb_refresh", "Refresh",
+                class = "btn btn-outline-secondary btn-sm",
+                icon  = icon("rotate"))
+            ),
+            DTOutput("fb_table")
+          )
+        )
+      )
+    )
+  ),
+
+  # ---- Tab 6: About ----
   nav_panel(
     title = "About",
     icon  = icon("circle-info"),
@@ -627,10 +697,10 @@ server <- function(input, output, session) {
         icon("clock"), " Model not yet trained. Run Phase 4 and 5 first."))
     }
     div(
-      div(class = "stat-value mb-2", "Random Forest"),
+      div(class = "stat-value mb-2", "Logistic Regression"),
       p(style = "color:#94A3B8; font-size:0.9rem;",
         "Selected based on highest macro F1-score across all size classes.
-         500 decision trees with class weights applied to address XXL imbalance.")
+         Multinomial logistic regression outperformed Decision Tree and Random Forest on the test set (Macro F1 = 0.3763).")
     )
   })
 
@@ -702,6 +772,99 @@ server <- function(input, output, session) {
   output$weight_chart <- renderPlotly(make_hist("weight", "Weight (kg)", "#3B82F6"))
   output$height_chart <- renderPlotly(make_hist("height", "Height (cm)", "#06B6D4"))
   output$age_chart    <- renderPlotly(make_hist("age",    "Age",         "#10B981"))
+
+  # ---- Feedback tab ----
+  RETRAIN_THRESHOLD <- 50
+  FEEDBACK_PATH     <- "data/prediction_feedback.csv"
+
+  fb_data <- reactive({
+    input$fb_refresh
+    input$fb_yes
+    input$fb_submit
+    if (!file.exists(FEEDBACK_PATH)) return(NULL)
+    df <- read.csv(FEEDBACK_PATH, stringsAsFactors = FALSE)
+    if (nrow(df) == 0) return(NULL)
+    df
+  })
+
+  output$fb_total <- renderUI({
+    df <- fb_data()
+    tags$span(if (is.null(df)) 0 else nrow(df),
+      style = "color:#3B82F6;")
+  })
+
+  output$fb_correct <- renderUI({
+    df <- fb_data()
+    n  <- if (is.null(df)) 0 else sum(df$predicted_size == df$actual_size)
+    tags$span(n, style = "color:#10B981;")
+  })
+
+  output$fb_incorrect <- renderUI({
+    df <- fb_data()
+    n  <- if (is.null(df)) 0 else sum(df$predicted_size != df$actual_size)
+    tags$span(n, style = "color:#F43F5E;")
+  })
+
+  output$fb_accuracy <- renderUI({
+    df  <- fb_data()
+    pct <- if (is.null(df) || nrow(df) == 0) "—" else
+      paste0(round(mean(df$predicted_size == df$actual_size) * 100), "%")
+    tags$span(pct, style = "color:#F59E0B;")
+  })
+
+  output$fb_ready_badge <- renderUI({
+    df <- fb_data()
+    n  <- if (is.null(df)) 0 else nrow(df)
+    if (n >= RETRAIN_THRESHOLD)
+      tags$span(class = "confidence-badge badge-high",
+        icon("circle-check"), " Ready to retrain")
+    else
+      tags$span(class = "confidence-badge badge-low",
+        icon("clock"), " Not yet ready")
+  })
+
+  output$fb_progress_bar <- renderUI({
+    df  <- fb_data()
+    n   <- if (is.null(df)) 0 else nrow(df)
+    pct <- min(round(n / RETRAIN_THRESHOLD * 100), 100)
+    colour <- if (pct >= 100) "#10B981" else if (pct >= 50) "#F59E0B" else "#3B82F6"
+    div(
+      style = "background:#1E293B; border-radius:8px; height:18px; overflow:hidden;",
+      div(style = paste0(
+        "width:", pct, "%; height:100%; background:", colour,
+        "; border-radius:8px; transition:width 0.4s ease;"
+      ))
+    )
+  })
+
+  output$fb_progress_label <- renderUI({
+    df <- fb_data()
+    n  <- if (is.null(df)) 0 else nrow(df)
+    remaining <- max(RETRAIN_THRESHOLD - n, 0)
+    if (remaining == 0)
+      tags$span(style = "color:#10B981;",
+        paste0(n, " / ", RETRAIN_THRESHOLD, " submissions — threshold reached!"))
+    else
+      paste0(n, " / ", RETRAIN_THRESHOLD, " submissions — ",
+             remaining, " more needed")
+  })
+
+  output$fb_table <- renderDT({
+    df <- fb_data()
+    if (is.null(df)) {
+      return(datatable(data.frame(Message = "No feedback submitted yet."),
+        options = list(dom = "t"), rownames = FALSE))
+    }
+    df$correct <- ifelse(df$predicted_size == df$actual_size, "✅", "❌")
+    df <- df[order(df$timestamp, decreasing = TRUE), ]
+    datatable(df,
+      options  = list(pageLength = 10, dom = "tip"),
+      rownames = FALSE,
+      class    = "table-dark",
+      colnames = c("Timestamp", "Weight", "Age", "Height",
+                   "Predicted", "Actual", "Correct")
+    )
+  })
 
   # ---- Download EDA plots as zip ----
   output$download_plots <- downloadHandler(
