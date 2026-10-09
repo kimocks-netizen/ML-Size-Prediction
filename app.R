@@ -46,14 +46,20 @@ app_theme <- bs_theme(
 # =============================================================================
 ui <- page_navbar(
   title = tags$span(
-    tags$img(src = NULL, height = "20px"),
-    "SizePredict ML"
+    tags$img(
+      src    = "logo/logo.png",
+      height = "32px",
+      style  = "margin-right:10px; border-radius:6px; vertical-align:middle;"
+    ),
+    tags$span("SizePredict ML",
+      style = "vertical-align:middle; font-weight:700; letter-spacing:0.02em;")
   ),
   theme    = app_theme,
   bg       = "#1E293B",
   fillable = FALSE,
   header   = tags$head(
-    tags$link(rel = "stylesheet", href = "styles.css")
+    tags$link(rel = "stylesheet", href = "styles.css"),
+    tags$link(rel = "icon", type = "image/png", href = "logo/logo.png")
   ),
 
   # ---- Tab 1: Dashboard ----
@@ -67,14 +73,23 @@ ui <- page_navbar(
       div(class = "row mb-4",
         div(class = "col-12",
           div(class = "card p-4",
-            h2("Clothing Size Prediction",
-               style = "color:#3B82F6; font-weight:800; margin-bottom:0.25rem;"),
-            p("Machine Learning Decision Support System",
-              style = "color:#94A3B8; font-size:1rem; margin-bottom:1rem;"),
+            div(class = "d-flex align-items-center gap-3 mb-3",
+              tags$img(
+                src   = "logo/logo.png",
+                height = "64px",
+                style  = "border-radius:10px;"
+              ),
+              div(
+                h2("Clothing Size Prediction",
+                   style = "color:#3B82F6; font-weight:800; margin-bottom:0.15rem;"),
+                p("Machine Learning Decision Support System",
+                  style = "color:#94A3B8; font-size:1rem; margin:0;")
+              )
+            ),
             p("A supervised machine learning model trained on historical clothing data
                to predict the most likely size category from customer weight, height and age.
                Built for Business Intelligence module 6029CMD.",
-              style = "color:#F8FAFC; max-width:700px;")
+              style = "color:#F8FAFC; max-width:700px; margin:0;")
           )
         )
       ),
