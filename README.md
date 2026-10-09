@@ -168,7 +168,7 @@ shiny::runApp(".")
 | Phase 4 — Model Training | ✅ Complete |
 | Phase 5 — Model Evaluation | ✅ Complete |
 | Phase 6 — Helper Utilities | ✅ Complete |
-| Phase 7 — R Shiny App | 🔄 In progress (demo mode) |
+| Phase 7 — R Shiny App | 🔄 In progress (live predictions) |
 | Phase 8 — EC2 Deployment | ⬜ Not started |
 | Phase 9 — Report | ⬜ Not started |
 

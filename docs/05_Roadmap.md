@@ -13,111 +13,117 @@ Data Pipeline → EDA → Model Training → Evaluation → Shiny App → EC2 De
 
 ---
 
-## Phase 1 — Data Inspection
+## Phase 1 — Data Inspection ✅
 **File:** `R/01_inspect_data.R`  
 **Output:** Console summary (no files written)
 
-- [ ] Load `data/clothing_raw.csv`
-- [ ] Inspect dimensions, column types, head/tail
-- [ ] Count missing values per column (`age`, `height`)
-- [ ] Count exact duplicate rows
-- [ ] Analyse size class distribution
-- [ ] Investigate height decimal precision (possible inch → cm conversion)
-- [ ] Identify ambiguous observations (same weight/age/height → different sizes)
-- [ ] Document findings for report Data Prep section
+- [x] Load `data/clothing_raw.csv`
+- [x] Inspect dimensions, column types, head/tail
+- [x] Count missing values per column (`age`, `height`)
+- [x] Count exact duplicate rows
+- [x] Analyse size class distribution
+- [x] Investigate height decimal precision (possible inch → cm conversion)
+- [x] Identify ambiguous observations (same weight/age/height → different sizes)
+- [x] Document findings for report Data Prep section
 
 ---
 
-## Phase 2 — Data Cleaning
+## Phase 2 — Data Cleaning ✅
 **File:** `R/02_clean_data.R`  
 **Output:** `data/clothing_clean.csv`
 
-- [ ] Preserve `data/clothing_raw.csv` — never overwrite
-- [ ] Remove exact duplicate rows (expected ~92,330)
-- [ ] Handle missing `age` values — impute median or remove, justify decision
-- [ ] Handle missing `height` values — impute median or remove, justify decision
-- [ ] Investigate unusual age values before deleting
-- [ ] Investigate ambiguous observations after deduplication
-- [ ] Encode `size` as ordered factor: `XXS < S < M < L < XL < XXL < XXXL`
-- [ ] Document class imbalance — XXL (69 records) vs M (29,712 records)
-- [ ] Write `data/clothing_clean.csv`
-- [ ] Initialise `data/prediction_feedback.csv` with headers only
+- [x] Preserve `data/clothing_raw.csv` — never overwrite
+- [x] Remove exact duplicate rows (92,330 removed)
+- [x] Handle missing `age` values — imputed median (34)
+- [x] Handle missing `height` values — imputed median (165.1 cm)
+- [x] Investigate unusual age values — 13 age=0 rows removed
+- [x] Investigate ambiguous observations — 6,805 retained, disclosed as limitation
+- [x] Encode `size` as ordered factor: `XXS < S < M < L < XL < XXL < XXXL`
+- [x] Document class imbalance — XXL (67 records) vs XXXL (6,766 records), 101:1 ratio
+- [x] Write `data/clothing_clean.csv` (27,391 rows)
+- [x] Initialise `data/prediction_feedback.csv` with headers only
 
 ---
 
-## Phase 3 — Exploratory Data Analysis
+## Phase 3 — Exploratory Data Analysis ✅
 **File:** `R/03_exploratory_analysis.R`  
-**Output:** `outputs/figures/*.png`
+**Output:** `outputs/figures/*.png` (10 plots)
 
-- [ ] Size class frequency bar chart
-- [ ] Weight distribution histogram
-- [ ] Height distribution histogram
-- [ ] Age distribution histogram
-- [ ] Weight by size boxplot
-- [ ] Height by size boxplot
-- [ ] Age by size boxplot
-- [ ] Correlation matrix / pairs plot (weight, height, age)
-- [ ] Save all plots to `outputs/figures/`
-- [ ] Note patterns relevant to report Visualisation section
+- [x] Size class frequency bar chart — XXXL (24.7%) and M (17.9%) dominate
+- [x] Weight distribution histogram — median 63 kg, right-skewed
+- [x] Height distribution histogram — bin=2.54 cm confirms inch conversion
+- [x] Age distribution histogram — median 34, broad spread
+- [x] Weight by size boxplot — strong upward trend, most predictive feature
+- [x] Height by size boxplot — moderate trend, significant overlap
+- [x] Age by size boxplot — weak relationship
+- [x] Weight vs height scatter (5k sample) — size bands visible but overlapping
+- [x] Correlation heatmap — weight/height moderately correlated (r≈0.5)
+- [x] Class imbalance log scale — XXL severity clearly visible
+- [x] All 10 plots saved to `outputs/figures/`
 
 ---
 
-## Phase 4 — Model Training
+## Phase 4 — Model Training ✅
 **File:** `R/04_train_models.R`  
-**Output:** `models/logistic_model.rds`, `models/decision_tree_model.rds`, `models/random_forest_model.rds`
+**Output:** `models/logistic_model.rds`, `models/decision_tree_model.rds`, `models/random_forest_model.rds`, `models/test_df.rds`
 
-- [ ] Load `data/clothing_clean.csv`
-- [ ] Set seed (42) for reproducibility
-- [ ] 80/20 stratified train/test split via `caret::createDataPartition`
-- [ ] Save `data/final_test.csv` — held-out test set, never touched during training
-- [ ] Apply class weights to address XXL imbalance (use `ranger` class.weights)
-- [ ] Train Model 1: Multinomial Logistic Regression (baseline)
-- [ ] Train Model 2: Decision Tree (`rpart`)
-- [ ] Train Model 3: Random Forest (`ranger`, 500 trees, probability = TRUE)
-- [ ] Save each model as `.rds`
+- [x] Load `data/clothing_clean.csv`
+- [x] Set seed (42) for reproducibility
+- [x] 80/20 stratified train/test split — 21,916 train / 5,475 test
+- [x] Save `models/test_df.rds` — held-out test set
+- [x] Compute inverse-frequency class weights for XXL imbalance
+- [x] Train Model 1: Multinomial Logistic Regression — train acc 42.75%
+- [x] Train Model 2: Decision Tree (`rpart`, pruned to best cp) — train acc 42.11%
+- [x] Train Model 3: Random Forest (`ranger`, 500 trees, probability=TRUE) — OOB acc 39.99%
+- [x] Variable importance: weight (1.25) > age (1.02) > height (0.59)
+- [x] All three models saved as `.rds`
 
 ---
 
-## Phase 5 — Model Evaluation
+## Phase 5 — Model Evaluation ✅
 **File:** `R/05_evaluate_models.R`  
-**Output:** `outputs/model_metrics.csv`, `outputs/confusion_matrix.csv`
+**Output:** `outputs/model_metrics.csv`, `outputs/confusion_matrix.csv`, `models/best_model.rds`
 
-- [ ] Load all three models and `data/final_test.csv`
-- [ ] Generate predictions on unseen test data
-- [ ] Calculate per-model: Accuracy, Precision, Recall, F1-score (macro)
-- [ ] Generate confusion matrix for each model
-- [ ] Save comparison table to `outputs/model_metrics.csv`
-- [ ] Save best model confusion matrix to `outputs/confusion_matrix.csv`
-- [ ] Select best model based on macro F1 (not accuracy alone — due to imbalance)
-- [ ] Save best model as `models/best_model.rds`
-- [ ] Document selection rationale for report
+- [x] Load all three models and `models/test_df.rds`
+- [x] Generate predictions on unseen test data (5,475 rows)
+- [x] Calculate per-model: Accuracy, Kappa, Macro F1
+- [x] Results: Logistic (43.21%, F1=0.3763) > Tree (41.75%, F1=0.3599) > RF (22.41%, F1=0.1835)
+- [x] Save comparison table to `outputs/model_metrics.csv`
+- [x] Save best model confusion matrix to `outputs/confusion_matrix.csv`
+- [x] Best model selected: **Logistic Regression** (highest macro F1)
+- [x] Per-class F1: XXXL=0.74, XXS=0.41, S=0.38, M=0.35, XL=0.31, L=0.08, XXL=NA
+- [x] Save best model as `models/best_model.rds`
+- [x] App now serves live predictions (no longer in demo mode)
 
 ---
 
-## Phase 6 — Helper Utilities
+## Phase 6 — Helper Utilities ✅
 **File:** `R/helpers.R`  
 **File:** `R/prediction.R`
 
-- [ ] `helpers.R` — size level order constant, seed constant, input validation function, probability formatting function
-- [ ] `prediction.R` — load model function, predict from new inputs function, format result for UI
+- [x] `helpers.R` — SIZE_LEVELS, SEED, confidence thresholds, input bounds, `confidence_level()`, `confidence_colour()`, `validate_input()`
+- [x] `prediction.R` — `load_model()`, `predict_size()` using ranger probability output, `save_feedback()` appending to CSV
 
 ---
 
-## Phase 7 — R Shiny Application
+## Phase 7 — R Shiny Application 🔄
 **File:** `app.R`  
-**Supporting:** `www/styles.css`
+**Supporting:** `www/styles.css`, `www/logo/logo.png`
 
-- [ ] Load `models/best_model.rds` on startup (not per-request)
-- [ ] Source `R/helpers.R` and `R/prediction.R`
-- [ ] Build UI with `bslib` theme (see colour palette below)
-- [ ] **Tab 1 — Dashboard:** project title, business description, model deployed, quick stats
-- [ ] **Tab 2 — Predict Size:** weight/height/age inputs, Predict button, result card, probability bar chart, feedback YES/NO
-- [ ] **Tab 3 — Model Performance:** model comparison table, confusion matrix, selected model info
-- [ ] **Tab 4 — Data Insights:** size frequency chart, feature distribution charts
-- [ ] **Tab 5 — About:** dataset info, limitations note, AI acknowledgement
-- [ ] Input validation (weight > 0, height > 0, age > 0, sensible upper bounds)
-- [ ] Feedback writes row to `data/prediction_feedback.csv`
-- [ ] Test all tabs, valid inputs, invalid inputs, edge cases
+- [x] Load `models/best_model.rds` on startup (not per-request)
+- [x] Source `R/helpers.R` and `R/prediction.R`
+- [x] Build UI with `bslib` Bootstrap 5 dark theme
+- [x] **Tab 1 — Dashboard:** hero, stat boxes, workflow, business context
+- [x] **Tab 2 — Predict Size:** inputs, Predict button, result card, probability bar chart, feedback YES/NO
+- [x] **Tab 3 — Model Performance:** metrics table, confusion matrix, selected model info
+- [x] **Tab 4 — Data Insights:** size distribution, weight/height/age histograms, download all plots button
+- [x] **Tab 5 — About:** dataset info, limitations, AI acknowledgement
+- [x] Input validation with sensible bounds
+- [x] Feedback writes row to `data/prediction_feedback.csv`
+- [x] Logo in navbar and dashboard hero
+- [x] Demo mode fallback when model not present
+- [ ] Full end-to-end test with live model
+- [ ] Screenshots for report
 
 ---
 
@@ -240,6 +246,7 @@ app_theme <- bs_theme(
 |---|---|---|
 | ML framework | `caret` + `ranger` | Established, well-documented |
 | Primary model candidate | Random Forest | Handles multiclass, supports probability output |
+| Best model (actual result) | Logistic Regression | Highest macro F1 (0.3763) on test set — RF underperformed due to class weight over-correction with probability=TRUE |
 | Baseline model | Logistic Regression | Simple benchmark for comparison |
 | Class imbalance strategy | Class weights in `ranger` | No synthetic data risk, simple to implement |
 | Model selection metric | Macro F1 | Accounts for XXL imbalance better than accuracy |
@@ -259,8 +266,10 @@ app_theme <- bs_theme(
 data/
 ├── clothing_raw.csv        ← never modified
 ├── clothing_clean.csv      ← Phase 2 output
-├── final_test.csv          ← Phase 4 output, held-out set
 └── prediction_feedback.csv ← Phase 7 output, app feedback
+
+models/
+└── test_df.rds             ← Phase 4 output, held-out test set (replaces final_test.csv)
 
 models/
 ├── logistic_model.rds      ← Phase 4
@@ -283,9 +292,9 @@ outputs/
 | Phase 1 — Data Inspection | ✅ Complete | `FEAT: Phase 2` (46e6f7a) |
 | Phase 2 — Data Cleaning | ✅ Complete | `FEAT: Phase 2` (46e6f7a) |
 | Phase 3 — EDA | ✅ Complete | `FEAT: Phase 3` |
-| Phase 4 — Model Training | ⬜ Not started | — |
-| Phase 5 — Model Evaluation | ⬜ Not started | — |
+| Phase 4 — Model Training | ✅ Complete | `FEAT: Phase 4 & 5` (3a216ca) |
+| Phase 5 — Model Evaluation | ✅ Complete | `FEAT: Phase 4 & 5` (3a216ca) |
 | Phase 6 — Helper Utilities | ✅ Complete | `FEAT: Phase 2` (46e6f7a) |
-| Phase 7 — R Shiny App | 🔄 In progress (demo mode) | `FEAT: Phase 2` (46e6f7a) |
+| Phase 7 — R Shiny App | 🔄 In progress (live predictions) | `FEAT: Phase 4 & 5` (3a216ca) |
 | Phase 8 — EC2 Deployment | ⬜ Not started | — |
 | Phase 9 — Report | ⬜ Not started | — |
