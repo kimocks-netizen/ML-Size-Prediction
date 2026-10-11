@@ -83,20 +83,36 @@ aboutUI <- function(id) {
     # Full-width Size Conversion strip
     div(class = "row",
       div(class = "col-12",
-        div(class = "card p-4",
+        div(class = "card p-3",
           div(class = "section-title", "Size Conversion"),
-          div(class = "size-strip-full",
-            lapply(names(US_TO_EU), function(us)
-              div(class = "size-chip-full",
-                div(class = "chip-us", us),
-                div(class = "chip-divider"),
-                div(class = "chip-eu", US_TO_EU[[us]])
+          tags$table(
+            style = "width:100%; border-collapse:separate; border-spacing:4px;",
+            tags$thead(
+              tags$tr(
+                lapply(names(US_TO_EU), function(us)
+                  tags$th(us, style = "
+                    text-align:center; background:#0F172A; color:#F8FAFC;
+                    font-size:0.95rem; font-weight:700; padding:0.55rem 0;
+                    border-radius:6px 6px 0 0; border-bottom:2px solid #3B82F6;
+                  ")
+                )
+              )
+            ),
+            tags$tbody(
+              tags$tr(
+                lapply(names(US_TO_EU), function(us)
+                  tags$td(US_TO_EU[[us]], style = "
+                    text-align:center; background:#0F172A; color:#3B82F6;
+                    font-size:0.9rem; font-weight:600; padding:0.45rem 0;
+                    border-radius:0 0 6px 6px;
+                  ")
+                )
               )
             )
           ),
           div(class = "d-flex justify-content-between mt-2 px-1",
-            tags$span(style = "font-size:0.72rem; color:#475569;", "US Size"),
-            tags$span(style = "font-size:0.72rem; color:#475569;", "EU Women's Standard")
+            tags$span(style = "font-size:0.7rem; color:#475569;", "US Size"),
+            tags$span(style = "font-size:0.7rem; color:#475569;", "EU Women's Standard")
           )
         )
       )

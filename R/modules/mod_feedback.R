@@ -47,7 +47,9 @@ feedbackUI <- function(id) {
           ),
           p(style = "color:#94A3B8; font-size:0.85rem; margin-bottom:0.75rem;",
             "Model retraining is recommended once 50 feedback submissions are collected."),
-          uiOutput(ns("fb_progress_bar"))
+          uiOutput(ns("fb_progress_bar")),
+          p(style = "color:#94A3B8; font-size:0.8rem; margin-top:0.5rem;",
+            uiOutput(ns("fb_progress_label")))
         )
       )
     ),
@@ -124,35 +126,19 @@ feedbackServer <- function(id) {
       n      <- if (is.null(fb_data())) 0 else nrow(fb_data())
       pct    <- min(round(n / RETRAIN_THRESHOLD * 100), 100)
       colour <- if (pct >= 100) "#10B981" else if (pct >= 50) "#F59E0B" else "#3B82F6"
-      remaining <- max(RETRAIN_THRESHOLD - n, 0)
-      label <- if (remaining == 0)
-        paste0(n, " / ", RETRAIN_THRESHOLD, " — threshold reached!")
-      else
-        paste0(remaining, " more submissions needed to retrain")
+      div(style = "background:#1E293B; border-radius:8px; height:18px; overflow:hidden;",
+        div(style = paste0("width:", pct, "%; height:100%; background:", colour,
+                           "; border-radius:8px; transition:width 0.4s ease;")))
+    })
 
-      div(
-        # Track labels
-        div(class = "d-flex justify-content-between align-items-center mb-1",
-          div(style = "font-size:0.8rem; color:#94A3B8;", label),
-          div(style = paste0("font-size:0.9rem; font-weight:700; color:", colour, ";"),
-            paste0(pct, "%"))
-        ),
-        # Track
-        div(class = "progress-track",
-          div(class = "progress-fill",
-            style = paste0("width:", pct, "%;")
-          )
-        ),
-        # Milestone ticks
-        div(class = "d-flex justify-content-between mt-1",
-          style = "font-size:0.72rem; color:#475569;",
-          tags$span("0"),
-          tags$span("25%"),
-          tags$span("50%"),
-          tags$span("75%"),
-          tags$span("100%")
-        )
-      )
+    output$fb_progress_label <- renderUI({
+      n         <- if (is.null(fb_data())) 0 else nrow(fb_data())
+      remaining <- max(RETRAIN_THRESHOLD - n, 0)
+      if (remaining == 0)
+        tags$span(style = "color:#10B981;",
+          paste0(n, " / ", RETRAIN_THRESHOLD, " submissions — threshold reached!"))
+      else
+        paste0(n, " / ", RETRAIN_THRESHOLD, " submissions — ", remaining, " more needed")
     })
 
     output$fb_progress_label <- renderUI({ NULL })
@@ -178,8 +164,8 @@ feedbackServer <- function(id) {
 
       datatable(df,
         options  = list(pageLength = 10, lengthMenu = c(5, 10, 25, 50),
-                        dom = "<'d-flex align-items-center gap-2 mb-2'lf>tip",
-                        language = list(search = "Search:", lengthMenu = "Show _MENU_")),
+                        dom = "<'d-flex align-items-center gap-2 mb-3'f l p>ti",
+                        language = list(search = "", searchPlaceholder = "Search feedback...", lengthMenu = "Show _MENU_")),
         rownames = FALSE, escape = FALSE, class = "table-dark",
         colnames = c("Timestamp", "Weight", "Age", "Height", "Predicted", "Actual", "Correct")
       )
