@@ -63,7 +63,9 @@ feedbackUI <- function(id) {
                 choices  = c("All" = "all", "Correct" = "correct", "Incorrect" = "incorrect"),
                 selected = "all", width = "140px"),
               actionButton(ns("fb_refresh"), "Refresh",
-                class = "btn btn-outline-secondary btn-sm", icon = icon("rotate"))
+                class = "btn btn-outline-secondary btn-sm",
+                icon  = icon("rotate"),
+                style = "height:31px; padding:0 0.75rem; font-size:0.85rem; line-height:1; display:inline-flex; align-items:center; gap:0.35rem;")
             )
           ),
           DTOutput(ns("fb_table"))
