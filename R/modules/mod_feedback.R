@@ -138,7 +138,7 @@ feedbackServer <- function(id) {
         # Track
         div(class = "progress-track",
           div(class = "progress-fill",
-            style = paste0("width:", pct, "%; background:", colour, ";")
+            style = paste0("width:", pct, "%;")
           )
         ),
         # Milestone ticks
