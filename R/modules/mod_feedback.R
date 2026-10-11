@@ -41,7 +41,7 @@ feedbackUI <- function(id) {
     div(class = "row g-3 mb-4",
       div(class = "col-12",
         div(class = "card p-4",
-          div(class = "d-flex justify-content-between align-items-center mb-2",
+          div(class = "d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2",
             div(class = "section-title mb-0", "Retraining Readiness"),
             uiOutput(ns("fb_ready_badge"))
           ),
