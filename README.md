@@ -200,5 +200,6 @@ shiny::runApp(".")
 
 ## AI Use
 
-Amazon Q Developer was used for code generation, debugging and project planning.
+Copilot - project planning.
+ChatGPT -	Data analysis and identifying suitable model algorithms and equations
 Full acknowledgement is included in the report and in the app About tab.

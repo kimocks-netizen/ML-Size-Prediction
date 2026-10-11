@@ -1,0 +1,3 @@
+timestamp,weight,age,height,predicted_size,actual_size
+"2026-10-09 20:05:24",55,10,100,"M","M"
+"2026-10-11 14:28:36",69,30,172,"XL","XL"

@@ -454,8 +454,8 @@ ui <- page_navbar(
               ),
               tags$tbody(
                 tags$tr(
-                  tags$td("Amazon Q Developer"),
-                  tags$td("Code generation, debugging and project planning")
+                  tags$td("Copilot"),
+                  tags$td("Project planning")
                 ),
                 tags$tr(
                   tags$td("ChatGPT"),
@@ -633,10 +633,12 @@ server <- function(input, output, session) {
         title = "",
         color = "#94A3B8",
         categoryorder = "array",
-        categoryarray = rev(levels(df$label))
+        categoryarray = rev(levels(df$label)),
+        ticklabelposition = "outside",
+        ticklen = 8
       ),
       font   = list(color = "#F8FAFC", family = "Inter"),
-      margin = list(l = 10, r = 60, t = 10, b = 40),
+      margin = list(l = 60, r = 60, t = 10, b = 40),
       showlegend = FALSE
     )
   })
