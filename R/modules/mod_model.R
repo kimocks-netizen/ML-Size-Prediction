@@ -62,15 +62,20 @@ modelServer <- function(id, model_ready) {
         div(class = "d-flex flex-column gap-2 mt-3",
           div(style = "background:#0F172A; border-radius:8px; padding:0.6rem 0.9rem;",
             div(style = "font-size:0.72rem; color:#94A3B8; text-transform:uppercase; letter-spacing:0.08em;", "Macro F1 Score"),
-            div(style = "font-size:1.3rem; font-weight:700; color:#3B82F6;", "0.3763")
+            div(style = "font-size:1.3rem; font-weight:700; color:#3B82F6;", "0.3763"),
+            div(style = "font-size:0.78rem; color:#64748B; margin-top:0.2rem;",
+              "Average prediction quality across all 7 size classes (0 = worst, 1 = perfect)")
           ),
           div(style = "background:#0F172A; border-radius:8px; padding:0.6rem 0.9rem;",
             div(style = "font-size:0.72rem; color:#94A3B8; text-transform:uppercase; letter-spacing:0.08em;", "Test Accuracy"),
-            div(style = "font-size:1.3rem; font-weight:700; color:#10B981;", "43.21%")
+            div(style = "font-size:1.3rem; font-weight:700; color:#10B981;", "43.21%"),
+            div(style = "font-size:0.78rem; color:#64748B; margin-top:0.2rem;",
+              "Percentage of correct size predictions on unseen test data")
           ),
           div(style = "background:#0F172A; border-radius:8px; padding:0.6rem 0.9rem;",
-            div(style = "font-size:0.72rem; color:#94A3B8; text-transform:uppercase; letter-spacing:0.08em;", "Selection Criterion"),
-            div(style = "font-size:0.85rem; color:#F8FAFC; margin-top:0.2rem;", "Highest macro F1 across 7 size classes")
+            div(style = "font-size:0.72rem; color:#94A3B8; text-transform:uppercase; letter-spacing:0.08em;", "Why This Model Won"),
+            div(style = "font-size:0.85rem; color:#F8FAFC; margin-top:0.2rem;",
+              "Outperformed Decision Tree and Random Forest on every size class when accounting for class imbalance")
           )
         )
       )

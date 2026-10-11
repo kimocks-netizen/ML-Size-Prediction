@@ -96,10 +96,10 @@ dashboardUI <- function(id) {
         div(class = "card p-4 h-100",
           div(class = "section-title", "Model Inputs & Output"),
           div(class = "d-flex flex-wrap gap-2 mb-3",
-            tags$span(class = "input-pill", icon("weight-hanging"), " Weight (kg)"),
-            tags$span(class = "input-pill", icon("ruler-vertical"), " Height (cm)"),
-            tags$span(class = "input-pill", icon("calendar"),       " Age"),
-            tags$span(class = "input-pill", icon("calculator"),     " BMI (auto)")
+            tags$span(class = "input-pill", icon("scale-balanced"),  " Weight (kg)"),
+            tags$span(class = "input-pill", icon("arrows-up-down"),   " Height (cm)"),
+            tags$span(class = "input-pill", icon("user"),             " Age"),
+            tags$span(class = "input-pill", icon("heart-pulse"),      " BMI (auto)")
           ),
           p(style = "color:#94A3B8; font-size:0.75rem; margin-bottom:0.5rem;",
             icon("arrow-right"), " Predicted size output:"),

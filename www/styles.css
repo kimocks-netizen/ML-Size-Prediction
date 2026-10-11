@@ -355,8 +355,8 @@ table.dataTable tbody tr:hover {
 }
 
 /* ---- Feedback toolbar controls same height ---- */
-#fb_filter,
-#fb_refresh {
+[id$="fb_filter"],
+[id$="fb_refresh"] {
   height: 31px;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
