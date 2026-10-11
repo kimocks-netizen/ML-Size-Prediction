@@ -96,10 +96,14 @@ dashboardUI <- function(id) {
         div(class = "card p-4 h-100",
           div(class = "section-title", "Model Inputs & Output"),
           div(class = "d-flex flex-wrap gap-2 mb-3",
-            tags$span(class = "input-pill", icon("scale-balanced"),  " Weight (kg)"),
-            tags$span(class = "input-pill", icon("arrows-up-down"),   " Height (cm)"),
-            tags$span(class = "input-pill", icon("user"),             " Age"),
-            tags$span(class = "input-pill", icon("heart-pulse"),      " BMI (auto)")
+            tags$span(class = "input-pill", icon("scale-balanced"),  " Weight (kg)",
+              tags$span(class = "pill-value", uiOutput(ns("pill_weight")))),
+            tags$span(class = "input-pill", icon("arrows-up-down"),  " Height (cm)",
+              tags$span(class = "pill-value", uiOutput(ns("pill_height")))),
+            tags$span(class = "input-pill", icon("user"),            " Age",
+              tags$span(class = "pill-value", uiOutput(ns("pill_age")))),
+            tags$span(class = "input-pill", icon("heart-pulse"),     " BMI (auto)",
+              tags$span(class = "pill-value", uiOutput(ns("pill_bmi"))))
           ),
           p(style = "color:#94A3B8; font-size:0.75rem; margin-bottom:0.5rem;",
             icon("arrow-right"), " Predicted size output:"),
@@ -129,5 +133,11 @@ dashboardServer <- function(id, clean_data, model_ready) {
       else
         tags$span(icon("clock"), style = "color:#F59E0B;")
     })
+
+    # Static default pill values (mirrors Predict tab defaults)
+    output$pill_weight <- renderUI(tags$span("e.g. 65"))
+    output$pill_height <- renderUI(tags$span("e.g. 170"))
+    output$pill_age    <- renderUI(tags$span("e.g. 28"))
+    output$pill_bmi    <- renderUI(tags$span("weight ÷ height²"))
   })
 }

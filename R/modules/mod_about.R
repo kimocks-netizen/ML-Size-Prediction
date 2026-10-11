@@ -5,7 +5,9 @@
 aboutUI <- function(id) {
   ns <- NS(id)
   div(class = "container-fluid py-4",
-    div(class = "row g-4",
+
+    # Top two columns
+    div(class = "row g-4 mb-4",
 
       # Left column
       div(class = "col-md-6",
@@ -27,7 +29,7 @@ aboutUI <- function(id) {
             )
           )
         ),
-        div(class = "card p-4 mb-4",
+        div(class = "card p-4",
           div(class = "section-title", "Limitations"),
           tags$ul(
             style = "color:#94A3B8; font-size:0.9rem; padding-left:1.2rem;",
@@ -37,22 +39,6 @@ aboutUI <- function(id) {
             tags$li("Dataset does not contain return or fit confirmation data"),
             tags$li("Height values originate from inch measurements converted to cm"),
             tags$li("Dataset reflects women's sizing — EU conversion uses women's standard")
-          )
-        ),
-        div(class = "card p-4",
-          div(class = "section-title", "Size Conversion"),
-          div(class = "size-strip",
-            lapply(names(US_TO_EU), function(us) {
-              div(class = "size-chip",
-                div(class = "chip-us", us),
-                div(style = "width:1px; height:28px; background:#334155; margin:0.3rem auto;"),
-                div(class = "chip-eu", US_TO_EU[[us]])
-              )
-            })
-          ),
-          div(style = "display:flex; justify-content:space-between; margin-top:0.5rem; padding:0 4px;",
-            tags$span(style = "font-size:0.7rem; color:#475569;", "US"),
-            tags$span(style = "font-size:0.7rem; color:#475569;", "EU (Women's)")
           )
         )
       ),
@@ -89,6 +75,28 @@ aboutUI <- function(id) {
                 tags$td("Learning R Shiny application development")
               )
             )
+          )
+        )
+      )
+    ),
+
+    # Full-width Size Conversion strip
+    div(class = "row",
+      div(class = "col-12",
+        div(class = "card p-4",
+          div(class = "section-title", "Size Conversion"),
+          div(class = "size-strip-full",
+            lapply(names(US_TO_EU), function(us)
+              div(class = "size-chip-full",
+                div(class = "chip-us", us),
+                div(class = "chip-divider"),
+                div(class = "chip-eu", US_TO_EU[[us]])
+              )
+            )
+          ),
+          div(class = "d-flex justify-content-between mt-2 px-1",
+            tags$span(style = "font-size:0.72rem; color:#475569;", "US Size"),
+            tags$span(style = "font-size:0.72rem; color:#475569;", "EU Women's Standard")
           )
         )
       )
