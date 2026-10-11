@@ -65,6 +65,7 @@ ui <- page_navbar(
     tags$link(rel = "stylesheet", href = "styles.css"),
     tags$link(rel = "icon", type = "image/png", href = "logo/logo.png")
   ),
+  nav_spacer(),
 
   # ---- Tab 1: Dashboard ----
   nav_panel(
@@ -376,9 +377,16 @@ ui <- page_navbar(
           div(class = "card p-4",
             div(class = "d-flex justify-content-between align-items-center mb-3",
               div(class = "section-title mb-0", "Feedback Log"),
-              actionButton("fb_refresh", "Refresh",
-                class = "btn btn-outline-secondary btn-sm",
-                icon  = icon("rotate"))
+              div(class = "d-flex gap-2",
+                selectInput("fb_filter", NULL,
+                  choices  = c("All" = "all", "Correct" = "correct", "Incorrect" = "incorrect"),
+                  selected = "all",
+                  width    = "140px"
+                ),
+                actionButton("fb_refresh", "Refresh",
+                  class = "btn btn-outline-secondary btn-sm",
+                  icon  = icon("rotate"))
+              )
             ),
             DTOutput("fb_table")
           )
@@ -883,6 +891,7 @@ server <- function(input, output, session) {
   })
 
   output$fb_table <- renderDT({
+    input$fb_filter
     df <- fb_data()
     if (is.null(df)) {
       return(datatable(data.frame(Message = "No feedback submitted yet."),
@@ -894,8 +903,20 @@ server <- function(input, output, session) {
       as.character(icon("circle-xmark", style = "color:#F43F5E;"))
     )
     df <- df[order(df$timestamp, decreasing = TRUE), ]
+
+    # Apply filter
+    if (!is.null(input$fb_filter) && input$fb_filter == "correct")
+      df <- df[df$predicted_size == df$actual_size, ]
+    else if (!is.null(input$fb_filter) && input$fb_filter == "incorrect")
+      df <- df[df$predicted_size != df$actual_size, ]
+
     datatable(df,
-      options  = list(pageLength = 10, dom = "tip"),
+      options  = list(
+        pageLength = 10,
+        lengthMenu = c(5, 10, 25, 50),
+        dom  = "<'d-flex justify-content-between align-items-center mb-2'lf>tip",
+        language = list(search = "Search log:", lengthMenu = "Show _MENU_ rows")
+      ),
       rownames = FALSE,
       escape   = FALSE,
       class    = "table-dark",

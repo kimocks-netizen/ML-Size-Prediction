@@ -3,6 +3,52 @@
    Clothing Size Prediction App
    ============================================================ */
 
+/* ---- Animations ---- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(59,130,246,0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.card {
+  animation: fadeInUp 0.4s ease both;
+}
+.stat-box {
+  animation: fadeInUp 0.4s ease both;
+}
+.stat-box:nth-child(1) { animation-delay: 0.05s; }
+.stat-box:nth-child(2) { animation-delay: 0.10s; }
+.stat-box:nth-child(3) { animation-delay: 0.15s; }
+.stat-box:nth-child(4) { animation-delay: 0.20s; }
+
+.result-card {
+  animation: fadeInUp 0.5s ease both;
+}
+.result-size {
+  animation: countUp 0.4s ease both;
+}
+.confidence-badge {
+  animation: fadeIn 0.6s ease both;
+}
+.limitation-note {
+  animation: slideInLeft 0.4s ease both;
+}
+
 /* ---- Base ---- */
 body {
   background-color: #0F172A;
@@ -40,6 +86,12 @@ body {
   background-color: #1E293B;
   border: 1px solid #334155;
   border-radius: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  border-color: #3B82F6;
+  box-shadow: 0 4px 24px rgba(59,130,246,0.08);
 }
 
 .card-header {
@@ -57,6 +109,7 @@ body {
   border-radius: 16px;
   text-align: center;
   padding: 2rem;
+  animation: pulse 2s infinite;
 }
 
 .result-size {
@@ -101,6 +154,7 @@ body {
   border: 1px solid #334155;
   color: #F8FAFC;
   border-radius: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-control:focus,
@@ -126,13 +180,18 @@ body {
   font-weight: 600;
   border-radius: 8px;
   padding: 0.6rem 1.5rem;
-  transition: background-color 0.2s, transform 0.1s;
+  transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
 .btn-primary:hover {
   background-color: #2563EB;
   border-color: #2563EB;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59,130,246,0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-predict {
@@ -148,11 +207,13 @@ body {
   color: #10B981;
   border-radius: 8px;
   font-weight: 600;
+  transition: background-color 0.2s, transform 0.15s;
 }
 
 .btn-outline-success:hover {
   background-color: #10B981;
   color: #fff;
+  transform: translateY(-1px);
 }
 
 .btn-outline-danger {
@@ -160,11 +221,13 @@ body {
   color: #F43F5E;
   border-radius: 8px;
   font-weight: 600;
+  transition: background-color 0.2s, transform 0.15s;
 }
 
 .btn-outline-danger:hover {
   background-color: #F43F5E;
   color: #fff;
+  transform: translateY(-1px);
 }
 
 /* ---- Stat boxes (dashboard) ---- */
@@ -174,6 +237,13 @@ body {
   border-radius: 12px;
   padding: 1.25rem 1.5rem;
   text-align: center;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-box:hover {
+  border-color: #3B82F6;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(59,130,246,0.15);
 }
 
 .stat-value {
@@ -208,6 +278,7 @@ table.dataTable thead th {
 
 table.dataTable tbody tr {
   background-color: #0F172A;
+  transition: background-color 0.15s;
 }
 
 table.dataTable tbody tr:hover {
@@ -219,6 +290,23 @@ table.dataTable tbody tr:hover {
 .dataTables_filter label {
   color: #94A3B8 !important;
   font-size: 0.85rem;
+}
+
+.dataTables_paginate .paginate_button {
+  color: #94A3B8 !important;
+  border-radius: 6px !important;
+}
+
+.dataTables_paginate .paginate_button.current {
+  background: #3B82F6 !important;
+  border-color: #3B82F6 !important;
+  color: #fff !important;
+}
+
+.dataTables_paginate .paginate_button:hover {
+  background: #1E293B !important;
+  border-color: #3B82F6 !important;
+  color: #3B82F6 !important;
 }
 
 /* ---- Probability bars ---- */
