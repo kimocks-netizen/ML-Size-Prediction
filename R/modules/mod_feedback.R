@@ -58,12 +58,21 @@ feedbackUI <- function(id) {
     div(class = "row g-3",
       div(class = "col-12",
         div(class = "card p-4",
-          div(class = "d-flex justify-content-between align-items-center mb-3",
+          div(class = "d-flex justify-content-between align-items-center mb-2",
             div(class = "section-title mb-0", "Feedback Log"),
             actionButton(ns("fb_refresh"), "Refresh",
               class = "btn btn-outline-secondary btn-sm",
               icon  = icon("rotate"),
               style = "height:31px; padding:0 0.75rem; font-size:0.85rem; line-height:1; display:inline-flex; align-items:center; gap:0.35rem;")
+          ),
+          div(class = "d-flex gap-2 mb-3",
+            tags$select(
+              id    = ns("fb_filter"),
+              class = "fb-toolbar-select",
+              tags$option(value = "all",       "All"),
+              tags$option(value = "correct",   "Correct"),
+              tags$option(value = "incorrect", "Incorrect")
+            )
           ),
           DTOutput(ns("fb_table"))
         )
@@ -159,11 +168,11 @@ feedbackServer <- function(id) {
         options  = list(
           pageLength = 10,
           lengthMenu = c(5, 10, 25, 50),
-          dom = "<'mb-3'f>ti<'d-flex align-items-center justify-content-between mt-2'lp>",
+          dom = "<'mb-2'f>ti<'d-flex align-items-center justify-content-between mt-2'lp>",
           language = list(
             search = "",
             searchPlaceholder = "Search feedback...",
-            lengthMenu = "Show _MENU_  Filter: <select id='fb-dt-filter'><option value='all'>All</option><option value='correct'>Correct</option><option value='incorrect'>Incorrect</option></select>"
+            lengthMenu = "Show _MENU_"
           )
         ),
         rownames = FALSE, escape = FALSE, class = "table-dark",

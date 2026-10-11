@@ -595,3 +595,22 @@ table.dataTable tbody tr:hover {
   font-size: 0.75rem;
   font-weight: 600;
 }
+
+/* ---- Feedback filter select — matches DT search input ---- */
+.fb-toolbar-select {
+  height: 31px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+  background: #0F172A;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #F8FAFC;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: auto;
+}
+.fb-toolbar-select:focus {
+  border-color: #3B82F6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+}
