@@ -596,20 +596,29 @@ table.dataTable tbody tr:hover {
   font-weight: 600;
 }
 
-/* ---- Feedback filter select — matches DT search input ---- */
-.fb-toolbar-select {
+/* ---- Feedback filter select — matches DT length select ---- */
+.fb-toolbar-select,
+.dataTables_length select,
+#dt-filter {
   height: 31px;
-  padding: 0.25rem 0.75rem;
+  padding: 0.25rem 2rem 0.25rem 0.65rem;
   font-size: 0.85rem;
-  background: #0F172A;
+  background-color: #0F172A;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
   border: 1px solid #334155;
   border-radius: 8px;
   color: #F8FAFC;
   cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  appearance: auto;
 }
-.fb-toolbar-select:focus {
+.fb-toolbar-select:focus,
+.dataTables_length select:focus,
+#dt-filter:focus {
   border-color: #3B82F6;
   outline: none;
   box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
