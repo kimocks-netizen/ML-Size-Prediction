@@ -47,9 +47,7 @@ feedbackUI <- function(id) {
           ),
           p(style = "color:#94A3B8; font-size:0.85rem; margin-bottom:0.75rem;",
             "Model retraining is recommended once 50 feedback submissions are collected."),
-          uiOutput(ns("fb_progress_bar")),
-          p(style = "color:#94A3B8; font-size:0.8rem; margin-top:0.5rem;",
-            uiOutput(ns("fb_progress_label")))
+          uiOutput(ns("fb_progress_bar"))
         )
       )
     ),
@@ -64,15 +62,6 @@ feedbackUI <- function(id) {
               class = "btn btn-outline-secondary btn-sm",
               icon  = icon("rotate"),
               style = "height:31px; padding:0 0.75rem; font-size:0.85rem; line-height:1; display:inline-flex; align-items:center; gap:0.35rem;")
-          ),
-          div(class = "d-flex gap-2 mb-3",
-            tags$select(
-              id    = ns("fb_filter"),
-              class = "fb-toolbar-select",
-              tags$option(value = "all",       "All"),
-              tags$option(value = "correct",   "Correct"),
-              tags$option(value = "incorrect", "Incorrect")
-            )
           ),
           DTOutput(ns("fb_table"))
         )
@@ -128,9 +117,20 @@ feedbackServer <- function(id) {
       n      <- if (is.null(fb_data())) 0 else nrow(fb_data())
       pct    <- min(round(n / RETRAIN_THRESHOLD * 100), 100)
       colour <- if (pct >= 100) "#10B981" else if (pct >= 50) "#F59E0B" else "#3B82F6"
-      div(style = "background:#1E293B; border-radius:8px; height:18px; overflow:hidden;",
-        div(style = paste0("width:", pct, "%; height:100%; background:", colour,
-                           "; border-radius:8px; transition:width 0.4s ease;")))
+      div(
+        div(style = paste0(
+              "background:#1E293B; border-radius:999px; height:16px; overflow:hidden;",
+              "border:1px solid #334155;"),
+          div(style = paste0(
+            "width:", pct, "%; height:16px; border-radius:999px;",
+            "background:", colour, ";",
+            "box-shadow:0 0 10px ", colour, "80;",
+            "transition:width 0.5s ease; min-width:", if (pct > 0) "6px" else "0", ";"
+          ))
+        ),
+        div(style = "margin-top:0.4rem; font-size:0.8rem; color:#94A3B8;",
+          uiOutput(session$ns("fb_progress_label")))
+      )
     })
 
     output$fb_progress_label <- renderUI({
@@ -142,8 +142,6 @@ feedbackServer <- function(id) {
       else
         paste0(n, " / ", RETRAIN_THRESHOLD, " submissions — ", remaining, " more needed")
     })
-
-    output$fb_progress_label <- renderUI({ NULL })
 
     output$fb_table <- renderDT({
       input$fb_filter
@@ -168,10 +166,9 @@ feedbackServer <- function(id) {
         options  = list(
           pageLength = 10,
           lengthMenu = c(5, 10, 25, 50),
-          dom = "<'mb-2'f>ti<'d-flex align-items-center justify-content-between mt-2'lp>",
+          dom = "<'d-flex align-items-center gap-2 mb-2'f B>ti<'d-flex align-items-center justify-content-between mt-2'lp>",
           language = list(
-            search = "",
-            searchPlaceholder = "Search feedback...",
+            search = "Filter: <select id='dt-filter' class='fb-toolbar-select' style='margin-left:0.5rem;'><option value=''>All</option><option value='correct'>Correct</option><option value='incorrect'>Incorrect</option></select> Search:",
             lengthMenu = "Show _MENU_"
           )
         ),
