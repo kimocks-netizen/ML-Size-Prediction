@@ -46,14 +46,17 @@ app_theme <- bs_theme(
 # UI
 # =============================================================================
 ui <- page_navbar(
-  title = tags$span(
+  title = tags$a(
+    href = "#",
+    onclick = "$('.nav-link').filter(function(){ return $(this).text().trim().startsWith('Dashboard'); }).tab('show'); return false;",
+    style = "text-decoration:none; display:flex; align-items:center;",
     tags$img(
       src    = "logo/logo.png",
       height = "32px",
       style  = "margin-right:10px; border-radius:6px; vertical-align:middle;"
     ),
     tags$span("SizePredict ML",
-      style = "vertical-align:middle; font-weight:700; letter-spacing:0.02em;")
+      style = "vertical-align:middle; font-weight:700; letter-spacing:0.02em; color:#F8FAFC;")
   ),
   theme    = app_theme,
   bg       = "#1E293B",
@@ -196,52 +199,42 @@ ui <- page_navbar(
       div(class = "row g-4",
 
         # Input panel
-        div(class = "col-md-4",
-          div(class = "card p-4",
+        div(class = "col-md-5",
+          div(class = "card p-4 mb-4",
             div(class = "section-title", "Customer Information"),
-
             numericInput("weight", "Weight (kg)",
               value = 65, min = WEIGHT_MIN, max = WEIGHT_MAX, step = 1),
-
             numericInput("height", "Height (cm)",
               value = 170, min = HEIGHT_MIN, max = HEIGHT_MAX, step = 1),
-
             numericInput("age", "Age",
               value = 28, min = AGE_MIN, max = AGE_MAX, step = 1),
-
             br(),
             actionButton("predict_btn", "Predict Size",
-              class = "btn btn-primary btn-predict",
+              class = "btn btn-primary btn-predict w-100",
               icon  = icon("wand-magic-sparkles")),
-
             br(), br(),
             div(class = "limitation-note",
               icon("triangle-exclamation"), " ",
-              "This prediction is an estimate based on historical patterns.
-               Size standards vary across brands and garment types."
+              "Estimate based on historical patterns. Size standards vary across brands."
             )
-          )
-        ),
-
-        # Result panel
-        div(class = "col-md-8",
-
-          # Result card
-          div(class = "card p-4 mb-4",
-            div(class = "section-title", "Prediction Result"),
-            uiOutput("result_ui")
-          ),
-
-          # Probability chart
-          div(class = "card p-4 mb-4",
-            div(class = "section-title", "Size Probabilities"),
-            plotlyOutput("prob_chart", height = "280px")
           ),
 
           # Feedback
           div(class = "card p-4",
-            div(class = "section-title", "Feedback"),
+            div(class = "section-title", "Was this correct?"),
             uiOutput("feedback_ui")
+          )
+        ),
+
+        # Result panel
+        div(class = "col-md-7",
+          div(class = "card p-4 mb-4",
+            div(class = "section-title", "Prediction Result"),
+            uiOutput("result_ui")
+          ),
+          div(class = "card p-4",
+            div(class = "section-title", "Size Probabilities"),
+            plotlyOutput("prob_chart", height = "300px")
           )
         )
       )
@@ -400,34 +393,24 @@ ui <- page_navbar(
     icon  = icon("circle-info"),
 
     div(class = "container-fluid py-4",
-      div(class = "row",
-        div(class = "col-md-8",
+      div(class = "row g-4",
 
+        div(class = "col-md-6",
           div(class = "card p-4 mb-4",
             div(class = "section-title", "Project"),
             tags$table(class = "table table-sm",
               style = "color:#94A3B8; font-size:0.9rem;",
               tags$tbody(
-                tags$tr(tags$td("Module"),  tags$td("Business Intelligence (6029CMD)")),
-                tags$tr(tags$td("Title"),   tags$td("Machine Learning-Based Clothing Size Prediction")),
-                tags$tr(tags$td("Model"),   tags$td("Supervised Multiclass Classification")),
-                tags$tr(tags$td("Target"),  tags$td("Clothing size: XXS, S, M, L, XL, XXL, XXXL")),
-                tags$tr(tags$td("Inputs"),  tags$td("Weight (kg), Height (cm), Age"))
-              )
-            )
-          ),
-
-          div(class = "card p-4 mb-4",
-            div(class = "section-title", "Dataset"),
-            tags$table(class = "table table-sm",
-              style = "color:#94A3B8; font-size:0.9rem;",
-              tags$tbody(
-                tags$tr(tags$td("Raw records"),    tags$td("119,734")),
-                tags$tr(tags$td("After cleaning"), tags$td("27,391")),
-                tags$tr(tags$td("Duplicates removed"), tags$td("92,330 (77.1%)")),
-                tags$tr(tags$td("Missing values"), tags$td("Imputed with column median")),
-                tags$tr(tags$td("Height encoding"), tags$td("Inches converted to cm (×2.54)")),
-                tags$tr(tags$td("Class imbalance"), tags$td("XXL: 67 records vs XXXL: 6,766"))
+                tags$tr(tags$td("Module"),   tags$td("Business Intelligence (6029CMD)")),
+                tags$tr(tags$td("Title"),    tags$td("ML-Based Clothing Size Prediction")),
+                tags$tr(tags$td("Model"),    tags$td("Supervised Multiclass Classification")),
+                tags$tr(tags$td("Target"),   tags$td("XXS, S, M, L, XL, XXL, XXXL")),
+                tags$tr(tags$td("Inputs"),   tags$td("Weight (kg), Height (cm), Age")),
+                tags$tr(tags$td("Live URL"), tags$td(
+                  tags$a("sizepredictionml.shinyapps.io",
+                    href = "https://sizepredictionml.shinyapps.io/ML-Size-Prediction/",
+                    target = "_blank", style = "color:#3B82F6;")
+                ))
               )
             )
           ),
@@ -440,12 +423,28 @@ ui <- page_navbar(
               tags$li("XXL class has very few training examples (67 records)"),
               tags$li("6,805 ambiguous observations where identical inputs map to different sizes"),
               tags$li("Dataset does not contain return or fit confirmation data"),
-              tags$li("Height values appear to originate from inch measurements converted to cm")
+              tags$li("Height values originate from inch measurements converted to cm"),
+              tags$li("Dataset reflects women's sizing — EU conversion uses women's standard")
             )
           )
         ),
 
-        div(class = "col-md-4",
+        div(class = "col-md-6",
+          div(class = "card p-4 mb-4",
+            div(class = "section-title", "Dataset"),
+            tags$table(class = "table table-sm",
+              style = "color:#94A3B8; font-size:0.9rem;",
+              tags$tbody(
+                tags$tr(tags$td("Raw records"),       tags$td("119,734")),
+                tags$tr(tags$td("After cleaning"),    tags$td("27,391")),
+                tags$tr(tags$td("Duplicates removed"),tags$td("92,330 (77.1%)")),
+                tags$tr(tags$td("Missing values"),    tags$td("Imputed with column median")),
+                tags$tr(tags$td("Height encoding"),   tags$td("Inches converted to cm (×2.54)")),
+                tags$tr(tags$td("Class imbalance"),   tags$td("XXL: 67 records vs XXXL: 6,766"))
+              )
+            )
+          ),
+
           div(class = "card p-4",
             div(class = "section-title", "AI Use Acknowledgement"),
             tags$table(class = "table table-sm",
@@ -456,7 +455,25 @@ ui <- page_navbar(
               tags$tbody(
                 tags$tr(
                   tags$td("Amazon Q Developer"),
-                  tags$td("Code generation, debugging, project planning")
+                  tags$td("Code generation, debugging and project planning")
+                ),
+                tags$tr(
+                  tags$td("ChatGPT"),
+                  tags$td("Data analysis and identifying suitable model algorithms and equations")
+                ),
+                tags$tr(
+                  tags$td("Claude"),
+                  tags$td("Guidance on integrating ML model equations with the dataset")
+                ),
+                tags$tr(
+                  tags$td(
+                    tags$a("YouTube",
+                      href   = "https://www.youtube.com/watch?v=jxsKUxkiaLI",
+                      target = "_blank",
+                      style  = "color:#3B82F6;"
+                    )
+                  ),
+                  tags$td("Learning R Shiny application development")
                 )
               )
             )
@@ -869,11 +886,16 @@ server <- function(input, output, session) {
       return(datatable(data.frame(Message = "No feedback submitted yet."),
         options = list(dom = "t"), rownames = FALSE))
     }
-    df$correct <- ifelse(df$predicted_size == df$actual_size, "✅", "❌")
+    df$correct <- ifelse(
+      df$predicted_size == df$actual_size,
+      as.character(icon("circle-check", style = "color:#10B981;")),
+      as.character(icon("circle-xmark", style = "color:#F43F5E;"))
+    )
     df <- df[order(df$timestamp, decreasing = TRUE), ]
     datatable(df,
       options  = list(pageLength = 10, dom = "tip"),
       rownames = FALSE,
+      escape   = FALSE,
       class    = "table-dark",
       colnames = c("Timestamp", "Weight", "Age", "Height",
                    "Predicted", "Actual", "Correct")

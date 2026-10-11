@@ -106,7 +106,7 @@ Data Pipeline → EDA → Model Training → Evaluation → Shiny App → EC2 De
 
 ---
 
-## Phase 7 — R Shiny Application 🔄
+## Phase 7 — R Shiny Application ✅
 **File:** `app.R`  
 **Supporting:** `www/styles.css`, `www/logo/logo.png`
 
@@ -114,30 +114,32 @@ Data Pipeline → EDA → Model Training → Evaluation → Shiny App → EC2 De
 - [x] Source `R/helpers.R` and `R/prediction.R`
 - [x] Build UI with `bslib` Bootstrap 5 dark theme
 - [x] **Tab 1 — Dashboard:** hero, stat boxes, workflow, business context
-- [x] **Tab 2 — Predict Size:** inputs, Predict button, result card, probability bar chart, feedback YES/NO
+- [x] **Tab 2 — Predict Size:** inputs, result card (US + EU), probability bar chart, feedback YES/NO
 - [x] **Tab 3 — Model Performance:** metrics table, confusion matrix, selected model info
-- [x] **Tab 4 — Data Insights:** size distribution, weight/height/age histograms, download all plots button
-- [x] **Tab 5 — About:** dataset info, limitations, AI acknowledgement
+- [x] **Tab 4 — Data Insights:** size distribution, weight/height/age histograms, download plots
+- [x] **Tab 5 — Feedback:** stats, retraining progress meter, feedback log with icons
+- [x] **Tab 6 — About:** project info, dataset, limitations, AI acknowledgement
 - [x] Input validation with sensible bounds
 - [x] Feedback writes row to `data/prediction_feedback.csv`
-- [x] Logo in navbar and dashboard hero
+- [x] Logo + title in navbar clickable → Dashboard
+- [x] US and EU sizes shown simultaneously in result card and chart
 - [x] Demo mode fallback when model not present
-- [ ] Full end-to-end test with live model
+- [x] Full end-to-end test with live model
 - [ ] Screenshots for report
 
 ---
 
-## Phase 8 — AWS EC2 Deployment
-**Target:** Single EC2 instance (Linux, 2 GiB RAM minimum)
+## Phase 8 — Deployment ✅
+**Platform:** shinyapps.io (free tier)  
+**Script:** `scripts/deploy.sh`
 
-- [ ] Launch EC2 instance (Amazon Linux 2 or Ubuntu)
-- [ ] Configure security group: port 80/443 inbound, SSH restricted
-- [ ] Install R and Shiny Server
-- [ ] Upload `app.R`, `models/best_model.rds`, `data/clothing_clean.csv`, `www/`
-- [ ] Test hosted URL
-- [ ] Configure HTTPS (recommended)
-- [ ] Capture screenshots for report
-- [ ] Keep source code + model backup separate from EC2
+- [x] Account created: `sizepredictionml` on shinyapps.io
+- [x] `rsconnect` configured with token and secret
+- [x] App deployed: https://sizepredictionml.shinyapps.io/ML-Size-Prediction/
+- [x] Bundle optimised — only required files (6MB, excludes 30MB RF model)
+- [x] `scripts/deploy.sh` — one-command manual redeploy
+- [x] `scripts/run_local.sh` — one-command local run
+- [x] Live predictions confirmed working
 
 ---
 
@@ -295,6 +297,6 @@ outputs/
 | Phase 4 — Model Training | ✅ Complete | `FEAT: Phase 4 & 5` (3a216ca) |
 | Phase 5 — Model Evaluation | ✅ Complete | `FEAT: Phase 4 & 5` (3a216ca) |
 | Phase 6 — Helper Utilities | ✅ Complete | `FEAT: Phase 2` (46e6f7a) |
-| Phase 7 — R Shiny App | 🔄 In progress (live predictions) | `FEAT: Phase 4 & 5` (3a216ca) |
-| Phase 8 — EC2 Deployment | ⬜ Not started | — |
+| Phase 7 — R Shiny App | ✅ Complete | `ec85dcd` |
+| Phase 8 — Deployment | ✅ Complete (shinyapps.io) | `5800298` |
 | Phase 9 — Report | ⬜ Not started | — |
