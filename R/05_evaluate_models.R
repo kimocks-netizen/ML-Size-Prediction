@@ -17,7 +17,10 @@ dir.create("outputs", showWarnings = FALSE)
 # ---- Load test set and models ----
 cat("\n========== LOADING MODELS & TEST DATA ==========\n")
 test_df        <- readRDS("models/test_df.rds") %>%
-  mutate(size = factor(size, levels = SIZE_LEVELS))
+  mutate(
+    bmi  = weight / (height / 100)^2,
+    size = factor(size, levels = SIZE_LEVELS)
+  )
 logistic_model <- readRDS("models/logistic_model.rds")
 tree_model     <- readRDS("models/decision_tree_model.rds")
 rf_model       <- readRDS("models/random_forest_model.rds")

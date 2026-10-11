@@ -1,4 +1,4 @@
 Model,Accuracy,Kappa,MacroF1
-Logistic Regression,43.21,0.3021,0.3763
-Decision Tree,41.75,0.2827,0.3599
-Random Forest,22.41,0.0547,0.1835
+Logistic Regression,43.53,0.3059,0.3815
+Decision Tree,41.83,0.2835,0.3604
+Random Forest,23.12,0.063,0.1893

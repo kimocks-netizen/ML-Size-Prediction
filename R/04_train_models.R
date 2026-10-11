@@ -19,7 +19,10 @@ dir.create("models", showWarnings = FALSE)
 # ---- Load data ----
 cat("\n========== LOADING DATA ==========\n")
 df <- read_csv("data/clothing_clean.csv", show_col_types = FALSE) %>%
-  mutate(size = factor(size, levels = SIZE_LEVELS))
+  mutate(
+    bmi  = weight / (height / 100)^2,
+    size = factor(size, levels = SIZE_LEVELS)
+  )
 cat("Rows:", nrow(df), "| Classes:", nlevels(df$size), "\n")
 
 # ---- Train / test split (80/20, stratified) ----
@@ -45,7 +48,7 @@ print(round(class_weights, 5))
 cat("\n========== MODEL 1: Logistic Regression ==========\n")
 
 logistic_model <- multinom(
-  size ~ weight + height + age,
+  size ~ weight + height + age + bmi,
   data    = train_df,
   MaxNWts = 5000,
   maxit   = 300,
@@ -66,7 +69,7 @@ cat("Train accuracy:", round(log_acc * 100, 2), "%\n")
 cat("\n========== MODEL 2: Decision Tree ==========\n")
 
 tree_model <- rpart(
-  size ~ weight + height + age,
+  size ~ weight + height + age + bmi,
   data   = train_df,
   method = "class",
   control = rpart.control(
@@ -95,7 +98,7 @@ cat("\n========== MODEL 3: Random Forest ==========\n")
 cat("Training with 500 trees — this may take 1-2 minutes...\n")
 
 rf_model <- ranger(
-  size ~ weight + height + age,
+  size ~ weight + height + age + bmi,
   data              = train_df,
   num.trees         = 500,
   mtry              = 2,

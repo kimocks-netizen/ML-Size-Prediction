@@ -30,6 +30,7 @@ CONF_MED    <- 0.30
 WEIGHT_MIN  <- 20;  WEIGHT_MAX  <- 200
 HEIGHT_MIN  <- 100; HEIGHT_MAX  <- 220
 AGE_MIN     <- 1;   AGE_MAX     <- 100
+BMI_MIN     <- 10;  BMI_MAX     <- 80
 
 # Returns "high", "medium", or "low" based on top probability
 confidence_level <- function(prob) {

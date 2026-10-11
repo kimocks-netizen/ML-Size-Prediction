@@ -14,7 +14,8 @@ load_model <- function(path = "models/best_model.rds") {
 
 # Run prediction and return a named list with predicted size + probabilities
 predict_size <- function(model, weight, age, height) {
-  new_obs <- data.frame(weight = weight, age = age, height = height)
+  bmi     <- weight / (height / 100)^2
+  new_obs <- data.frame(weight = weight, age = age, height = height, bmi = bmi)
 
   if (inherits(model, "ranger")) {
     raw   <- predict(model, data = new_obs)$predictions

@@ -60,17 +60,10 @@ feedbackUI <- function(id) {
         div(class = "card p-4",
           div(class = "d-flex justify-content-between align-items-center mb-3",
             div(class = "section-title mb-0", "Feedback Log"),
-            div(class = "d-flex align-items-end gap-2",
-              div(style = "margin-bottom:0;",
-                selectInput(ns("fb_filter"), NULL,
-                  choices  = c("All" = "all", "Correct" = "correct", "Incorrect" = "incorrect"),
-                  selected = "all", width = "140px")
-              ),
-              actionButton(ns("fb_refresh"), "Refresh",
-                class = "btn btn-outline-secondary btn-sm",
-                icon  = icon("rotate"),
-                style = "height:31px; padding:0 0.75rem; font-size:0.85rem; line-height:1; display:inline-flex; align-items:center; gap:0.35rem; margin-bottom:1px;")
-            )
+            actionButton(ns("fb_refresh"), "Refresh",
+              class = "btn btn-outline-secondary btn-sm",
+              icon  = icon("rotate"),
+              style = "height:31px; padding:0 0.75rem; font-size:0.85rem; line-height:1; display:inline-flex; align-items:center; gap:0.35rem;")
           ),
           DTOutput(ns("fb_table"))
         )
@@ -163,9 +156,16 @@ feedbackServer <- function(id) {
         df <- df[df$predicted_size != df$actual_size, ]
 
       datatable(df,
-        options  = list(pageLength = 10, lengthMenu = c(5, 10, 25, 50),
-                        dom = "<'d-flex align-items-center gap-2 mb-3'f l p>ti",
-                        language = list(search = "", searchPlaceholder = "Search feedback...", lengthMenu = "Show _MENU_")),
+        options  = list(
+          pageLength = 10,
+          lengthMenu = c(5, 10, 25, 50),
+          dom = "<'mb-3'f>ti<'d-flex align-items-center justify-content-between mt-2'lp>",
+          language = list(
+            search = "",
+            searchPlaceholder = "Search feedback...",
+            lengthMenu = "Show _MENU_  Filter: <select id='fb-dt-filter'><option value='all'>All</option><option value='correct'>Correct</option><option value='incorrect'>Incorrect</option></select>"
+          )
+        ),
         rownames = FALSE, escape = FALSE, class = "table-dark",
         colnames = c("Timestamp", "Weight", "Age", "Height", "Predicted", "Actual", "Correct")
       )
