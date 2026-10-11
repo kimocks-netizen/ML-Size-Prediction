@@ -135,9 +135,9 @@ dashboardServer <- function(id, clean_data, model_ready) {
     })
 
     # Static default pill values (mirrors Predict tab defaults)
-    output$pill_weight <- renderUI(tags$span("e.g. 65"))
-    output$pill_height <- renderUI(tags$span("e.g. 170"))
-    output$pill_age    <- renderUI(tags$span("e.g. 28"))
+    output$pill_weight <- renderUI(NULL)
+    output$pill_height <- renderUI(NULL)
+    output$pill_age    <- renderUI(NULL)
     output$pill_bmi    <- renderUI(tags$span("weight ÷ height²"))
   })
 }
