@@ -11,7 +11,8 @@ insightsUI <- function(id) {
         div(class = "card p-4",
           div(class = "d-flex justify-content-between align-items-center mb-3",
             div(class = "section-title mb-0", "Size Class Distribution"),
-            downloadButton(ns("download_plots"), "Download All Plots",
+            downloadButton(ns("download_plots"),
+              tags$span(class = "d-none d-sm-inline", "Download All Plots"),
               class = "btn btn-outline-secondary btn-sm", icon = icon("download"))
           ),
           plotlyOutput(ns("size_dist_chart"), height = "320px")

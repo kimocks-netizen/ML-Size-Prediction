@@ -63,7 +63,7 @@ feedbackUI <- function(id) {
               icon  = icon("rotate"),
               style = "height:31px; padding:0 0.75rem; font-size:0.85rem; line-height:1; display:inline-flex; align-items:center; gap:0.35rem;")
           ),
-          DTOutput(ns("fb_table"))
+          div(class = "table-responsive", DTOutput(ns("fb_table")))
         )
       )
     )

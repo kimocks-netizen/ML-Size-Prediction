@@ -623,3 +623,217 @@ table.dataTable tbody tr:hover {
   outline: none;
   box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
 }
+
+/* ============================================================
+   MOBILE RESPONSIVE
+   ============================================================ */
+
+/* ---- Tablet and below (≤768px) ---- */
+@media (max-width: 768px) {
+
+  /* Navbar — collapse tabs to hamburger, reduce padding */
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
+  .navbar-brand span {
+    font-size: 0.95rem;
+  }
+
+  /* Body offset for smaller navbar */
+  body > div,
+  .bslib-page-navbar > .tab-content {
+    padding-top: 56px;
+  }
+
+  /* Cards — disable lift/scale on touch devices */
+  .card:hover,
+  .stat-box:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Stat boxes — 2 per row on tablet */
+  .stat-box {
+    padding: 1rem;
+  }
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  /* Result card — smaller size text */
+  .result-size {
+    font-size: 2.8rem;
+  }
+  .result-card {
+    padding: 1.25rem;
+  }
+
+  /* Predict tab — stack columns */
+  .col-md-5, .col-md-7 {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Model tab — stack selected model + confusion matrix */
+  .col-md-4, .col-md-8 {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* About tab — stack columns */
+  .col-md-6 {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Size conversion table — smaller font */
+  .size-strip-full .chip-us { font-size: 0.78rem; }
+  .size-strip-full .chip-eu { font-size: 0.68rem; }
+
+  /* Input pills — wrap freely */
+  .input-pill {
+    font-size: 0.78rem;
+    padding: 0.25rem 0.6rem;
+  }
+
+  /* Workflow steps — wrap */
+  .d-flex.flex-wrap {
+    gap: 0.35rem !important;
+  }
+
+  /* Section title smaller */
+  .section-title {
+    font-size: 0.7rem;
+  }
+
+  /* Feedback toolbar — allow wrap */
+  #fb_table_wrapper > div:first-child {
+    flex-wrap: wrap !important;
+  }
+  #fb_table_wrapper .dataTables_filter input {
+    width: 100%;
+  }
+
+  /* DT table — horizontal scroll */
+  .dataTables_wrapper {
+    overflow-x: auto;
+  }
+
+  /* Plotly charts — full width */
+  .js-plotly-plot {
+    width: 100% !important;
+  }
+
+  /* BMI insight — smaller padding */
+  .bmi-insight {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.82rem;
+  }
+}
+
+/* ---- Mobile (≤480px) ---- */
+@media (max-width: 480px) {
+
+  /* Stat boxes — 2 per row, tighter */
+  .stat-value { font-size: 1.25rem; }
+  .stat-label { font-size: 0.7rem; }
+  .stat-box   { padding: 0.75rem; }
+
+  /* Result size — fits screen */
+  .result-size { font-size: 2.2rem; }
+
+  /* Hero heading */
+  h2 { font-size: 1.2rem !important; }
+
+  /* Navbar brand text — hide on very small screens */
+  .navbar-brand span {
+    display: none;
+  }
+
+  /* Confidence badge */
+  .confidence-badge {
+    font-size: 0.75rem;
+    padding: 0.25em 0.6em;
+  }
+
+  /* Size conversion — even smaller */
+  .size-strip-full .chip-us { font-size: 0.7rem; }
+  .size-strip-full .chip-eu { font-size: 0.62rem; }
+
+  /* Cards — less padding */
+  .card.p-4 { padding: 0.85rem !important; }
+
+  /* Buttons — full width on mobile */
+  .btn-outline-success,
+  .btn-outline-danger {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Feedback stats — 2 per row */
+  .col-6 { width: 50% !important; }
+
+  /* Prob chart height */
+  .js-plotly-plot .plot-container {
+    min-height: 220px;
+  }
+
+  /* DT pagination — smaller buttons */
+  .dataTables_paginate .paginate_button {
+    padding: 0.2rem 0.5rem !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+/* ---- Hamburger icon — white ---- */
+.navbar-toggler {
+  border-color: rgba(255,255,255,0.3) !important;
+  padding: 0.25rem 0.5rem;
+}
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255,255,255,1)' stroke-width='2.5' stroke-linecap='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+}
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.35) !important;
+  outline: none;
+}
+
+/* ---- Mobile nav — overlay, does not push content down ---- */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #1E293B;
+    border-bottom: 1px solid #3B82F6;
+    border-top: 1px solid #334155;
+    z-index: 1029;
+    padding: 0.5rem 1rem 1rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .navbar-collapse .nav-link {
+    padding: 0.6rem 0.5rem;
+    border-bottom: 1px solid #334155;
+    font-size: 0.95rem;
+  }
+  .navbar-collapse .nav-link:last-child {
+    border-bottom: none;
+  }
+}
+
+/* ---- Table responsive — DT horizontal scroll on mobile ---- */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.table-responsive table.dataTable {
+  min-width: 400px;
+}
+
+/* ---- Download button — icon only on mobile ---- */
+@media (max-width: 575px) {
+  #download_plots .d-none {
+    display: none !important;
+  }
+}

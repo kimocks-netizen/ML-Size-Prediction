@@ -39,7 +39,7 @@ modelServer <- function(id, model_ready) {
       if (!file.exists("outputs/model_metrics.csv"))
         return(div(class = "limitation-note",
           icon("clock"), " Model evaluation results will appear here after Phase 5 is complete."))
-      DTOutput(session$ns("metrics_dt"))
+      div(class = "table-responsive", DTOutput(session$ns("metrics_dt")))
     })
 
     output$metrics_dt <- renderDT({
@@ -85,7 +85,7 @@ modelServer <- function(id, model_ready) {
       if (!file.exists("outputs/confusion_matrix.csv"))
         return(div(class = "limitation-note",
           icon("clock"), " Confusion matrix will appear after Phase 5 is complete."))
-      DTOutput(session$ns("cm_dt"))
+      div(class = "table-responsive", DTOutput(session$ns("cm_dt")))
     })
 
     output$cm_dt <- renderDT({
