@@ -19,6 +19,9 @@ outputs/figures/
 !outputs/model_metrics.csv
 !outputs/confusion_matrix.csv
 
+# docs/ — private planning documents, not part of source
+docs/
+
 # Screenshots — added manually before submission
 screenshots/
 

@@ -1,8 +1,16 @@
 # ML-Size-Prediction
 
-Machine Learning-Based Clothing Size Prediction and Decision Support System  
-**Module:** Business Intelligence (6029CMD) — Coventry University  
+Machine Learning-Based Clothing Size Prediction and Decision Support System
+**Module:** Business Intelligence (6029CMD) — Coventry University
 **Deadline:** 19/10/2026
+
+---
+
+## Live URL
+
+**https://sizepredictionml.shinyapps.io/ML-Size-Prediction/**
+
+Deployed via shinyapps.io (free tier).
 
 ---
 
@@ -11,7 +19,8 @@ Machine Learning-Based Clothing Size Prediction and Decision Support System
 Trains a supervised machine learning model on historical clothing data to predict
 a customer's clothing size (XXS → XXXL) from their weight, height and age.
 The trained model is deployed as an R Shiny web application that returns a
-predicted size and probability distribution for each new customer.
+predicted size (US and EU simultaneously) and probability distribution for each
+new customer. User feedback is collected and tracked toward model retraining.
 
 ---
 
@@ -19,46 +28,45 @@ predicted size and probability distribution for each new customer.
 
 ```text
 ML-Size-Prediction/
-├── app.R                        ← Shiny application (entry point)
+├── app.R                          ← Shiny application (entry point)
 ├── .gitignore
 ├── README.md
 │
 ├── R/
-│   ├── 01_inspect_data.R        ← Phase 1: data profiling (console only)
-│   ├── 02_clean_data.R          ← Phase 2: cleaning → clothing_clean.csv
-│   ├── 03_exploratory_analysis.R← Phase 3: EDA plots → outputs/figures/
-│   ├── 04_train_models.R        ← Phase 4: train Logistic, Tree, RF
-│   ├── 05_evaluate_models.R     ← Phase 5: metrics, select best model
-│   ├── helpers.R                ← Shared constants and utility functions
-│   └── prediction.R             ← Model loading and prediction logic
+│   ├── 01_inspect_data.R          ← Phase 1: data profiling (console only)
+│   ├── 02_clean_data.R            ← Phase 2: cleaning → clothing_clean.csv
+│   ├── 03_exploratory_analysis.R  ← Phase 3: EDA plots → outputs/figures/
+│   ├── 04_train_models.R          ← Phase 4: train Logistic, Tree, RF
+│   ├── 05_evaluate_models.R       ← Phase 5: metrics, select best model
+│   ├── helpers.R                  ← Constants, size mappings, utility functions
+│   └── prediction.R               ← Model loading and prediction logic
 │
 ├── data/
-│   ├── clothing_raw.csv         ← Original dataset (never modified, git-ignored)
-│   ├── clothing_clean.csv       ← Cleaned dataset (Phase 2 output)
-│   └── prediction_feedback.csv  ← App feedback log (git-ignored)
+│   ├── clothing_raw.csv           ← Original dataset (never modified, git-ignored)
+│   ├── clothing_clean.csv         ← Cleaned dataset (Phase 2 output)
+│   └── prediction_feedback.csv    ← App feedback log (git-ignored)
 │
 ├── models/
-│   ├── logistic_model.rds       ← Phase 4 output (git-ignored)
-│   ├── decision_tree_model.rds  ← Phase 4 output (git-ignored)
-│   ├── random_forest_model.rds  ← Phase 4 output (git-ignored)
-│   └── best_model.rds           ← Phase 5 output, loaded by app (git-ignored)
+│   ├── best_model.rds             ← Phase 5 output, loaded by app
+│   ├── logistic_model.rds         ← Phase 4 output (git-ignored)
+│   ├── decision_tree_model.rds    ← Phase 4 output (git-ignored)
+│   ├── random_forest_model.rds    ← Phase 4 output (git-ignored)
+│   └── test_df.rds                ← Held-out test set (git-ignored)
 │
 ├── outputs/
-│   ├── figures/                 ← EDA plots (Phase 3 output, git-ignored)
-│   ├── model_metrics.csv        ← Model comparison table (Phase 5 output)
-│   └── confusion_matrix.csv     ← Best model confusion matrix (Phase 5 output)
+│   ├── figures/                   ← EDA plots (git-ignored)
+│   ├── model_metrics.csv          ← Model comparison table
+│   └── confusion_matrix.csv       ← Best model confusion matrix
+│
+├── scripts/
+│   ├── deploy.sh                  ← Deploy to shinyapps.io
+│   └── run_local.sh               ← Run app locally
 │
 ├── www/
-│   └── styles.css               ← Dark theme CSS
+│   ├── styles.css                 ← Dark theme CSS with animations
+│   └── logo/logo.png              ← App logo
 │
-├── docs/
-│   ├── 01_Spec.md               ← Assignment brief
-│   ├── 02_Clothing_Size_Prediction_Project_Plan.md
-│   ├── 03_Technical Architecture.md
-│   ├── 04_clothing_size_project_supplement_.md
-│   └── 05_Roadmap.md            ← Live project roadmap
-│
-└── screenshots/                 ← App screenshots for report
+└── screenshots/                   ← App screenshots for report (git-ignored)
 ```
 
 ---
@@ -72,97 +80,72 @@ ML-Size-Prediction/
 brew install harfbuzz fribidi
 ```
 
-Install all R packages in one command:
+Install all R packages:
 
 ```r
 install.packages(c(
   "tidyverse", "caret", "ranger", "rpart", "rpart.plot",
-  "nnet", "bslib", "shiny", "DT", "plotly", "scales", "viridis"
+  "nnet", "bslib", "shiny", "DT", "plotly", "scales", "viridis", "rsconnect"
 ), repos = "https://cloud.r-project.org")
 ```
 
 ---
 
-## Live URL
-
-**https://sizepredictionml.shinyapps.io/ML-Size-Prediction/**
-
-Deployed via shinyapps.io (free tier). No EC2 required — spec only requires a working deployed app.
-
----
-
 ## How to Run
 
-All commands are run from the project root directory.
+### Local app
 
-### Step 1 — Inspect the raw data (optional, console output only)
-
-```r
-source("R/01_inspect_data.R")
+```bash
+bash scripts/run_local.sh
 ```
 
-### Step 2 — Clean the data
+Opens at `http://127.0.0.1:3838`
 
-Produces `data/clothing_clean.csv`.
+### Deploy to shinyapps.io
+
+```bash
+bash scripts/deploy.sh
+```
+
+### Full pipeline (from scratch)
 
 ```r
 source("R/02_clean_data.R")
-```
-
-### Step 3 — Exploratory data analysis
-
-Produces plots in `outputs/figures/`.
-
-```r
 source("R/03_exploratory_analysis.R")
-```
-
-### Step 4 — Train models
-
-Produces `models/logistic_model.rds`, `models/decision_tree_model.rds`,
-`models/random_forest_model.rds`.
-
-```r
 source("R/04_train_models.R")
-```
-
-### Step 5 — Evaluate and select best model
-
-Produces `outputs/model_metrics.csv`, `outputs/confusion_matrix.csv`,
-and `models/best_model.rds`.
-
-```r
 source("R/05_evaluate_models.R")
-```
-
-### Step 6 — Run the Shiny app
-
-```r
 shiny::runApp(".")
 ```
-
-Or from the terminal:
-
-```bash
-Rscript -e "shiny::runApp('.', port=3838, launch.browser=TRUE)"
-```
-
-The app opens at `http://127.0.0.1:3838`
-
-> The app runs in **demo mode** (random placeholder predictions) until
-> `models/best_model.rds` exists. Run Steps 2–5 first for real predictions.
 
 ---
 
-## Run the Full Pipeline in One Go
+## Model Results
 
-```r
-source("R/02_clean_data.R")
-source("R/03_exploratory_analysis.R")
-source("R/04_train_models.R")
-source("R/05_evaluate_models.R")
-shiny::runApp(".")
-```
+| Model | Accuracy | Macro F1 |
+|---|---|---|
+| Logistic Regression ✅ | 43.21% | 0.3763 |
+| Decision Tree | 41.75% | 0.3599 |
+| Random Forest | 22.41% | 0.1835 |
+
+**Best model: Logistic Regression** — selected by highest macro F1.
+
+Per-class F1: XXXL=0.74, XXS=0.41, S=0.38, M=0.35, XL=0.31, L=0.08, XXL=NA
+
+---
+
+## Size Conversion
+
+The dataset reflects women's sizing. Both US and EU sizes are shown simultaneously.
+
+| US | EU |
+|---|---|
+| XXS | 32 |
+| S | 36 |
+| M | 38 |
+| L | 40 |
+| XL | 42 |
+| XXL | 44 |
+| XXXL | 46 |
 
 ---
 
@@ -200,6 +183,9 @@ shiny::runApp(".")
 
 ## AI Use
 
-Copilot - project planning.
-ChatGPT -	Data analysis and identifying suitable model algorithms and equations
-Full acknowledgement is included in the report and in the app About tab.
+| Tool | How used |
+|---|---|
+| Amazon Q Developer | Code generation, debugging, project planning |
+| ChatGPT | Data analysis and identifying suitable model algorithms and equations |
+| Claude | Guidance on integrating ML model equations with the dataset |
+| YouTube | Learning R Shiny — https://www.youtube.com/watch?v=jxsKUxkiaLI |
