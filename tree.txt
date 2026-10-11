@@ -1,33 +1,50 @@
-clothing-size-prediction/
-├── README.md
+ML-Size-Prediction/
+├── app.R                          ← Entry point — sources modules, wires UI + server
 ├── .gitignore
-├── app.R
-├── data/
-│   ├── final_test.csv
-│   │   
-│   ├── clothing_clean.csv
-│   │   
-│   └── prediction_feedback.csv
+├── README.md
+├── tree.txt
+│
 ├── R/
-│   ├── 01_inspect_data.R
-│   ├── 02_clean_data.R
-│   ├── 03_exploratory_analysis.R
-│   ├── 04_train_models.R
-│   ├── 05_evaluate_models.R
-│   ├── prediction.R
-│   └── helpers.R
+│   ├── modules/
+│   │   ├── mod_dashboard.R        ← Tab 1: Dashboard
+│   │   ├── mod_predict.R          ← Tab 2: Predict Size + BMI insight
+│   │   ├── mod_model.R            ← Tab 3: Model Performance
+│   │   ├── mod_insights.R         ← Tab 4: Data Insights
+│   │   ├── mod_feedback.R         ← Tab 5: Feedback & Retraining
+│   │   └── mod_about.R            ← Tab 6: About (static)
+│   ├── 01_inspect_data.R          ← Phase 1: data profiling
+│   ├── 02_clean_data.R            ← Phase 2: cleaning → clothing_clean.csv
+│   ├── 03_exploratory_analysis.R  ← Phase 3: EDA plots → outputs/figures/
+│   ├── 04_train_models.R          ← Phase 4: train Logistic, Tree, RF
+│   ├── 05_evaluate_models.R       ← Phase 5: metrics, select best model
+│   ├── helpers.R                  ← Constants, size mappings, utility functions
+│   └── prediction.R               ← Model loading and prediction logic
+│
+├── data/
+│   ├── clothing_raw.csv           ← Original dataset (git-ignored)
+│   ├── clothing_clean.csv         ← Cleaned dataset (Phase 2 output)
+│   └── prediction_feedback.csv    ← App feedback log (git-ignored)
+│
 ├── models/
-│   ├── logistic_model.rds
-│   ├── decision_tree_model.rds
-│   ├── random_forest_model.rds
-│   └── best_model.rds
+│   ├── best_model.rds             ← Phase 5 output, loaded by app (git-tracked)
+│   ├── logistic_model.rds         ← Phase 4 output (git-ignored)
+│   ├── decision_tree_model.rds    ← Phase 4 output (git-ignored)
+│   ├── random_forest_model.rds    ← Phase 4 output (git-ignored)
+│   └── test_df.rds                ← Held-out test set (git-ignored)
+│
 ├── outputs/
-│   ├── figures/
-│   ├── model_metrics.csv
-│   └── confusion_matrix.csv
+│   ├── figures/                   ← EDA plots (git-ignored)
+│   ├── model_metrics.csv          ← Model comparison table
+│   └── confusion_matrix.csv       ← Best model confusion matrix
+│
+├── scripts/
+│   ├── deploy.sh                  ← Deploy to shinyapps.io
+│   └── run_local.sh               ← Run app locally
+│
 ├── www/
-│   ├── styles.css
-│   └── logo/
-├── screenshots/
-├── report/
-└── docs/
+│   ├── styles.css                 ← Dark theme CSS with animations
+│   └── logo/logo.png              ← App logo
+│
+├── docs/                          ← Local only (git-ignored)
+├── reports/                       ← Report drafts (git-ignored)
+└── screenshots/                   ← App screenshots (git-ignored)

@@ -28,12 +28,20 @@ new customer. User feedback is collected and tracked toward model retraining.
 
 ```text
 ML-Size-Prediction/
-├── app.R                          ← Shiny application (entry point)
+├── app.R                          ← Entry point — sources modules, wires UI + server
 ├── .gitignore
 ├── README.md
+├── tree.txt
 │
 ├── R/
-│   ├── 01_inspect_data.R          ← Phase 1: data profiling (console only)
+│   ├── modules/
+│   │   ├── mod_dashboard.R        ← Tab 1: Dashboard
+│   │   ├── mod_predict.R          ← Tab 2: Predict Size + BMI insight
+│   │   ├── mod_model.R            ← Tab 3: Model Performance
+│   │   ├── mod_insights.R         ← Tab 4: Data Insights
+│   │   ├── mod_feedback.R         ← Tab 5: Feedback & Retraining
+│   │   └── mod_about.R            ← Tab 6: About (static)
+│   ├── 01_inspect_data.R          ← Phase 1: data profiling
 │   ├── 02_clean_data.R            ← Phase 2: cleaning → clothing_clean.csv
 │   ├── 03_exploratory_analysis.R  ← Phase 3: EDA plots → outputs/figures/
 │   ├── 04_train_models.R          ← Phase 4: train Logistic, Tree, RF
@@ -42,12 +50,12 @@ ML-Size-Prediction/
 │   └── prediction.R               ← Model loading and prediction logic
 │
 ├── data/
-│   ├── clothing_raw.csv           ← Original dataset (never modified, git-ignored)
+│   ├── clothing_raw.csv           ← Original dataset (git-ignored)
 │   ├── clothing_clean.csv         ← Cleaned dataset (Phase 2 output)
 │   └── prediction_feedback.csv    ← App feedback log (git-ignored)
 │
 ├── models/
-│   ├── best_model.rds             ← Phase 5 output, loaded by app
+│   ├── best_model.rds             ← Phase 5 output, loaded by app (git-tracked)
 │   ├── logistic_model.rds         ← Phase 4 output (git-ignored)
 │   ├── decision_tree_model.rds    ← Phase 4 output (git-ignored)
 │   ├── random_forest_model.rds    ← Phase 4 output (git-ignored)
@@ -66,7 +74,9 @@ ML-Size-Prediction/
 │   ├── styles.css                 ← Dark theme CSS with animations
 │   └── logo/logo.png              ← App logo
 │
-└── screenshots/                   ← App screenshots for report (git-ignored)
+├── docs/                          ← Local only (git-ignored)
+├── reports/                       ← Report drafts (git-ignored)
+└── screenshots/                   ← App screenshots (git-ignored)
 ```
 
 ---
@@ -185,7 +195,7 @@ The dataset reflects women's sizing. Both US and EU sizes are shown simultaneous
 
 | Tool | How used |
 |---|---|
-| Amazon Q Developer | Code generation, debugging, project planning |
+| Copilot | Code generation, debugging, project planning |
 | ChatGPT | Data analysis and identifying suitable model algorithms and equations |
 | Claude | Guidance on integrating ML model equations with the dataset |
 | YouTube | Learning R Shiny — https://www.youtube.com/watch?v=jxsKUxkiaLI |

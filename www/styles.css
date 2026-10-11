@@ -61,6 +61,17 @@ body {
   background-color: #1E293B !important;
   border-bottom: 1px solid #3B82F6;
   padding: 0.75rem 1.5rem;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+}
+
+/* offset body so content doesn't hide under fixed navbar */
+body > div,
+.bslib-page-navbar > .tab-content {
+  padding-top: 64px;
 }
 
 .navbar-brand {
@@ -87,12 +98,14 @@ body {
   background-color: #1E293B;
   border: 1px solid #334155;
   border-radius: 12px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  will-change: transform;
 }
 
 .card:hover {
   border-color: #3B82F6;
-  box-shadow: 0 4px 24px rgba(59,130,246,0.08);
+  box-shadow: 0 8px 32px rgba(59,130,246,0.18), 0 2px 8px rgba(0,0,0,0.4);
+  transform: translateY(-4px) scale(1.01);
 }
 
 .card-header {
@@ -181,18 +194,19 @@ body {
   font-weight: 600;
   border-radius: 8px;
   padding: 0.6rem 1.5rem;
-  transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.25s ease;
 }
 
 .btn-primary:hover {
   background-color: #2563EB;
   border-color: #2563EB;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59,130,246,0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(59,130,246,0.45), 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .btn-primary:active {
   transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59,130,246,0.3);
 }
 
 .btn-predict {
@@ -208,13 +222,14 @@ body {
   color: #10B981;
   border-radius: 8px;
   font-weight: 600;
-  transition: background-color 0.2s, transform 0.15s;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.25s ease;
 }
 
 .btn-outline-success:hover {
   background-color: #10B981;
   color: #fff;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16,185,129,0.4);
 }
 
 .btn-outline-danger {
@@ -222,13 +237,23 @@ body {
   color: #F43F5E;
   border-radius: 8px;
   font-weight: 600;
-  transition: background-color 0.2s, transform 0.15s;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.25s ease;
 }
 
 .btn-outline-danger:hover {
   background-color: #F43F5E;
   color: #fff;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(244,63,94,0.4);
+}
+
+.btn-outline-secondary {
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.25s ease;
+}
+
+.btn-outline-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(148,163,184,0.25);
 }
 
 /* ---- Stat boxes (dashboard) ---- */
@@ -238,13 +263,14 @@ body {
   border-radius: 12px;
   padding: 1.25rem 1.5rem;
   text-align: center;
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
 }
 
 .stat-box:hover {
   border-color: #3B82F6;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(59,130,246,0.15);
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(59,130,246,0.22), 0 2px 8px rgba(0,0,0,0.4);
 }
 
 .stat-value {
@@ -372,7 +398,55 @@ table.dataTable tbody tr:hover {
   color: #94A3B8;
 }
 
-/* ---- Plotly dark override ---- */
+/* ---- BMI insight block ---- */
+.bmi-insight {
+  border-radius: 10px;
+  padding: 0.85rem 1.1rem;
+  margin-top: 1rem;
+  font-size: 0.88rem;
+  text-align: left;
+  animation: fadeInUp 0.5s ease both;
+}
+.bmi-insight .bmi-category {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+.bmi-insight .bmi-advice {
+  color: #CBD5E1;
+  line-height: 1.5;
+}
+
+/* ---- Size conversion strip ---- */
+.size-strip {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.size-chip {
+  background-color: #0F172A;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+  text-align: center;
+  min-width: 52px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.size-chip:hover {
+  border-color: #3B82F6;
+  box-shadow: 0 2px 10px rgba(59,130,246,0.2);
+}
+.size-chip .chip-us {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #F8FAFC;
+}
+.size-chip .chip-eu {
+  font-size: 0.75rem;
+  color: #94A3B8;
+  margin-top: 0.1rem;
+}
 .js-plotly-plot .plotly {
   background-color: transparent !important;
 }
@@ -382,3 +456,32 @@ table.dataTable tbody tr:hover {
 ::-webkit-scrollbar-track { background: #0F172A; }
 ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #3B82F6; }
+
+/* ---- Input pills (dashboard) ---- */
+.input-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: #0F172A;
+  border: 1px solid #334155;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.82rem;
+  color: #94A3B8;
+  font-weight: 500;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.input-pill:hover {
+  border-color: #3B82F6;
+  color: #F8FAFC;
+}
+.input-pill-output {
+  border-color: rgba(59,130,246,0.2);
+  color: #3B82F6;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+.input-pill-output:hover {
+  border-color: #3B82F6;
+  background-color: rgba(59,130,246,0.08);
+}

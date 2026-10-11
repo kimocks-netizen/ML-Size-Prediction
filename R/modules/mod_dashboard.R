@@ -95,13 +95,18 @@ dashboardUI <- function(id) {
       div(class = "col-md-6 mb-3",
         div(class = "card p-4 h-100",
           div(class = "section-title", "Model Inputs & Output"),
-          tags$ul(
-            style = "color:#94A3B8; font-size:0.9rem; padding-left:1.2rem;",
-            tags$li(tags$strong("Weight"), " (kg) — customer body weight"),
-            tags$li(tags$strong("Height"), " (cm) — customer height"),
-            tags$li(tags$strong("Age"), " — customer age in years"),
-            tags$li(tags$strong("BMI"), " — auto-calculated from weight & height"),
-            tags$li(tags$strong("→ Predicted Size"), " — XXS, S, M, L, XL, XXL or XXXL")
+          div(class = "d-flex flex-wrap gap-2 mb-3",
+            tags$span(class = "input-pill", icon("weight-hanging"), " Weight (kg)"),
+            tags$span(class = "input-pill", icon("ruler-vertical"), " Height (cm)"),
+            tags$span(class = "input-pill", icon("calendar"),       " Age"),
+            tags$span(class = "input-pill", icon("calculator"),     " BMI (auto)")
+          ),
+          p(style = "color:#94A3B8; font-size:0.75rem; margin-bottom:0.5rem;",
+            icon("arrow-right"), " Predicted size output:"),
+          div(class = "d-flex flex-wrap gap-1",
+            lapply(SIZE_LEVELS, function(s)
+              tags$span(class = "input-pill input-pill-output", s)
+            )
           )
         )
       )

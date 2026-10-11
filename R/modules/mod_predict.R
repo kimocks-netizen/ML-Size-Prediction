@@ -125,19 +125,19 @@ predictServer <- function(id, model, model_ready) {
           bmi      <- round(input$weight / (input$height / 100)^2, 1)
           bmi_info <- if (bmi < 18.5) {
             list(cat = "Underweight", colour = "#06B6D4", icon = "weight-scale",
-                 advice = paste0("BMI ", bmi, " — Consider a nutrient-rich diet. ",
-                   "Consult your GP (e.g. Dr. Smith) for a personalised meal plan and health check."))
+                 advice = paste0("BMI ", bmi, " — Your weight is below the healthy range. ",
+                   "Consider a nutrient-rich diet and consult your GP for a personalised health plan."))
           } else if (bmi < 25) {
             list(cat = "Healthy Weight", colour = "#10B981", icon = "circle-check",
-                 advice = paste0("BMI ", bmi, " — Great shape! Maintain with balanced nutrition ",
-                   "and regular exercise (150 min/week of moderate activity)."))
+                 advice = paste0("BMI ", bmi, " — You are within a healthy weight range. ",
+                   "Maintain this with balanced nutrition and regular exercise (150 min/week)."))
           } else if (bmi < 30) {
             list(cat = "Overweight", colour = "#F59E0B", icon = "triangle-exclamation",
-                 advice = paste0("BMI ", bmi, " — A calorie-controlled diet and 30 min daily exercise ",
-                   "can help. Consider speaking to your GP (e.g. Dr. Johnson) for guidance."))
+                 advice = paste0("BMI ", bmi, " — A calorie-controlled diet and 30 min of daily exercise ",
+                   "can help. Consider speaking to your GP for personalised guidance."))
           } else {
             list(cat = "Obese", colour = "#F43F5E", icon = "heart-pulse",
-                 advice = paste0("BMI ", bmi, " — Please consult your GP (e.g. Dr. Williams) promptly. ",
+                 advice = paste0("BMI ", bmi, " — Please consult your GP as soon as possible. ",
                    "A structured diet plan and supervised exercise programme are recommended."))
           }
           div(class = "bmi-insight",
