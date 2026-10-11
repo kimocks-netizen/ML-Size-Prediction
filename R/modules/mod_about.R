@@ -42,12 +42,17 @@ aboutUI <- function(id) {
         div(class = "card p-4",
           div(class = "section-title", "Size Conversion"),
           div(class = "size-strip",
-            lapply(names(US_TO_EU), function(us)
+            lapply(names(US_TO_EU), function(us) {
               div(class = "size-chip",
                 div(class = "chip-us", us),
+                div(style = "width:1px; height:28px; background:#334155; margin:0.3rem auto;"),
                 div(class = "chip-eu", US_TO_EU[[us]])
               )
-            )
+            })
+          ),
+          div(style = "display:flex; justify-content:space-between; margin-top:0.5rem; padding:0 4px;",
+            tags$span(style = "font-size:0.7rem; color:#475569;", "US"),
+            tags$span(style = "font-size:0.7rem; color:#475569;", "EU (Women's)")
           )
         )
       ),

@@ -417,6 +417,21 @@ table.dataTable tbody tr:hover {
   line-height: 1.5;
 }
 
+/* ---- Progress track ---- */
+.progress-track {
+  background: #0F172A;
+  border-radius: 999px;
+  height: 12px;
+  overflow: hidden;
+  border: 1px solid #334155;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s ease;
+  box-shadow: 0 0 8px rgba(59,130,246,0.4);
+}
+
 /* ---- Size conversion strip ---- */
 .size-strip {
   display: flex;
@@ -427,24 +442,26 @@ table.dataTable tbody tr:hover {
 .size-chip {
   background-color: #0F172A;
   border: 1px solid #334155;
-  border-radius: 8px;
-  padding: 0.4rem 0.75rem;
+  border-radius: 10px;
+  padding: 0.5rem 0.6rem;
   text-align: center;
   min-width: 52px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 .size-chip:hover {
   border-color: #3B82F6;
-  box-shadow: 0 2px 10px rgba(59,130,246,0.2);
+  box-shadow: 0 4px 14px rgba(59,130,246,0.2);
+  transform: translateY(-2px);
 }
 .size-chip .chip-us {
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #F8FAFC;
 }
 .size-chip .chip-eu {
-  font-size: 0.75rem;
-  color: #94A3B8;
+  font-size: 0.78rem;
+  color: #3B82F6;
+  font-weight: 600;
   margin-top: 0.1rem;
 }
 .js-plotly-plot .plotly {
