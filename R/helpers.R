@@ -6,6 +6,28 @@
 SIZE_LEVELS <- c("XXS", "S", "M", "L", "XL", "XXL", "XXXL")
 SEED        <- 42
 
+# US to EU size conversion (women's clothing standard)
+US_TO_EU <- c(
+  XXS  = "32",
+  S    = "36",
+  M    = "38",
+  L    = "40",
+  XL   = "42",
+  XXL  = "44",
+  XXXL = "46"
+)
+
+# Convert a US size label to EU
+to_eu_size <- function(us_size) {
+  unname(US_TO_EU[us_size])
+}
+
+# Format size for display given system preference
+format_size <- function(us_size, system = "US") {
+  if (system == "EU") paste0(to_eu_size(us_size), " (EU)")
+  else paste0(us_size, " (US)")
+}
+
 # Confidence thresholds for colour coding
 CONF_HIGH   <- 0.60
 CONF_MED    <- 0.30

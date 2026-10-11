@@ -200,6 +200,13 @@ ui <- page_navbar(
           div(class = "card p-4",
             div(class = "section-title", "Customer Information"),
 
+            radioButtons("size_system", "Size System",
+              choices  = c("US", "EU"),
+              selected = "US",
+              inline   = TRUE),
+
+            hr(style = "border-color:#334155;"),
+
             numericInput("weight", "Weight (kg)",
               value = 65, min = WEIGHT_MIN, max = WEIGHT_MAX, step = 1),
 
@@ -537,7 +544,7 @@ server <- function(input, output, session) {
           icon("flask"), " Demo mode — model not yet trained. Showing placeholder output."
         ),
       div(class = "result-label", "Recommended Size"),
-      div(class = "result-size", p$predicted_size),
+      div(class = "result-size", format_size(p$predicted_size, input$size_system)),
       div(class = "result-confidence",
         tags$span(
           class = paste0("confidence-badge badge-", cl),
@@ -551,7 +558,11 @@ server <- function(input, output, session) {
           "height: ", input$height, " cm | ",
           "age: ", input$age
         )
-      )
+      ),
+      if (input$size_system == "EU")
+        p(style = "color:#94A3B8; font-size:0.8rem; margin-top:0.25rem;",
+          paste0("US equivalent: ", p$predicted_size)
+        )
     )
   })
 
@@ -582,8 +593,16 @@ server <- function(input, output, session) {
     top   <- rv$prediction$predicted_size
     df$colour <- ifelse(df$size == top, "#3B82F6", "#334155")
 
+    # Apply size system labels
+    df$label <- if (input$size_system == "EU") {
+      paste0(US_TO_EU[as.character(df$size)], " (EU)")
+    } else {
+      as.character(df$size)
+    }
+    df$label <- factor(df$label, levels = df$label)
+
     plot_ly(df,
-      x = ~prob, y = ~size, type = "bar", orientation = "h",
+      x = ~prob, y = ~label, type = "bar", orientation = "h",
       marker = list(color = ~colour),
       text   = ~paste0(round(prob, 1), "%"),
       textposition = "outside",
@@ -602,7 +621,7 @@ server <- function(input, output, session) {
         title = "",
         color = "#94A3B8",
         categoryorder = "array",
-        categoryarray = rev(SIZE_LEVELS)
+        categoryarray = rev(levels(df$label))
       ),
       font   = list(color = "#F8FAFC", family = "Inter"),
       margin = list(l = 10, r = 60, t = 10, b = 40),
