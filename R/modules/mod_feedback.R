@@ -58,14 +58,17 @@ feedbackUI <- function(id) {
         div(class = "card p-4",
           div(class = "d-flex justify-content-between align-items-center mb-3",
             div(class = "section-title mb-0", "Feedback Log"),
-            div(class = "d-flex gap-2",
-              selectInput(ns("fb_filter"), NULL,
-                choices  = c("All" = "all", "Correct" = "correct", "Incorrect" = "incorrect"),
-                selected = "all", width = "140px"),
+            div(class = "d-flex align-items-end gap-2",
+              div(style = "margin-bottom:0;",
+                selectInput(ns("fb_filter"), NULL,
+                  choices  = c("All" = "all", "Correct" = "correct", "Incorrect" = "incorrect"),
+                  selected = "all", width = "140px")
+              ),
               actionButton(ns("fb_refresh"), "Refresh",
                 class = "btn btn-outline-secondary btn-sm",
                 icon  = icon("rotate"),
-                style = "height:31px; padding:0 0.75rem; font-size:0.85rem; line-height:1; display:inline-flex; align-items:center; gap:0.35rem;")
+                style = "height:31px; padding:0 0.75rem; font-size:0.85rem; line-height:1; display:inline-flex; align-items:center; gap:0.35rem; margin-bottom:1px;")
+            )
             )
           ),
           DTOutput(ns("fb_table"))
