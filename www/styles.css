@@ -85,7 +85,27 @@ body > div,
 .nav-link {
   color: #94A3B8 !important;
   font-size: 0.9rem;
-  transition: color 0.2s;
+  padding: 0.6rem 1rem !important;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  right: 50%;
+  height: 2px;
+  background: #3B82F6;
+  border-radius: 2px 2px 0 0;
+  transition: left 0.2s ease, right 0.2s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  left: 0.5rem;
+  right: 0.5rem;
 }
 
 .nav-link:hover,
