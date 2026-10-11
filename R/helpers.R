@@ -22,12 +22,6 @@ to_eu_size <- function(us_size) {
   unname(US_TO_EU[us_size])
 }
 
-# Format size for display given system preference
-format_size <- function(us_size, system = "US") {
-  if (system == "EU") paste0(to_eu_size(us_size), " (EU)")
-  else paste0(us_size, " (US)")
-}
-
 # Confidence thresholds for colour coding
 CONF_HIGH   <- 0.60
 CONF_MED    <- 0.30
