@@ -5,6 +5,6 @@ account: sizepredictionml
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 18141696
-bundleId: 12675991
+bundleId: 12676291
 url: https://sizepredictionml.shinyapps.io/ML-Size-Prediction/
 version: 1
