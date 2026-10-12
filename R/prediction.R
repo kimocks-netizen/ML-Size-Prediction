@@ -52,8 +52,12 @@ save_feedback <- function(path, weight, age, height,
     actual_size    = actual_size,
     stringsAsFactors = FALSE
   )
+  # Write header only if file doesn't exist yet
   write.table(row, path,
-    sep = ",", append = TRUE,
-    col.names = FALSE, row.names = FALSE, quote = TRUE
+    sep       = ",",
+    append    = file.exists(path),
+    col.names = !file.exists(path),
+    row.names = FALSE,
+    quote     = TRUE
   )
 }

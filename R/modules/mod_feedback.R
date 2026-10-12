@@ -3,7 +3,13 @@
 # =============================================================================
 
 RETRAIN_THRESHOLD <- 50
-FEEDBACK_PATH     <- "data/prediction_feedback.csv"
+# Use tempdir on shinyapps.io where data/ may not be writable
+FEEDBACK_PATH <- tryCatch({
+  path <- "data/prediction_feedback.csv"
+  write("", file.path(dirname(path), ".write_test"), append = FALSE)
+  file.remove(file.path(dirname(path), ".write_test"))
+  path
+}, error = function(e) file.path(tempdir(), "prediction_feedback.csv"))
 
 feedbackUI <- function(id) {
   ns <- NS(id)
@@ -76,8 +82,14 @@ feedbackServer <- function(id) {
     fb_data <- reactive({
       input$fb_refresh
       if (!file.exists(FEEDBACK_PATH)) return(NULL)
-      df <- read.csv(FEEDBACK_PATH, stringsAsFactors = FALSE)
-      if (nrow(df) == 0) return(NULL)
+      df <- tryCatch(
+        read.csv(FEEDBACK_PATH, stringsAsFactors = FALSE),
+        error = function(e) NULL
+      )
+      if (is.null(df) || nrow(df) == 0) return(NULL)
+      # Ensure correct column names regardless of how file was written
+      expected <- c("timestamp","weight","age","height","predicted_size","actual_size")
+      if (!all(expected %in% names(df))) names(df) <- expected
       df
     })
 
@@ -144,7 +156,6 @@ feedbackServer <- function(id) {
     })
 
     output$fb_table <- renderDT({
-      input$fb_filter
       df <- fb_data()
       if (is.null(df))
         return(datatable(data.frame(Message = "No feedback submitted yet."),
@@ -157,20 +168,12 @@ feedbackServer <- function(id) {
       )
       df <- df[order(df$timestamp, decreasing = TRUE), ]
 
-      if (!is.null(input$fb_filter) && input$fb_filter == "correct")
-        df <- df[df$predicted_size == df$actual_size, ]
-      else if (!is.null(input$fb_filter) && input$fb_filter == "incorrect")
-        df <- df[df$predicted_size != df$actual_size, ]
-
       datatable(df,
         options  = list(
           pageLength = 10,
           lengthMenu = c(5, 10, 25, 50),
-          dom = "<'d-flex align-items-center gap-2 mb-2'f B>ti<'d-flex align-items-center justify-content-between mt-2'lp>",
-          language = list(
-            search = "Filter: <select id='dt-filter' class='fb-toolbar-select' style='margin-left:0.5rem;'><option value=''>All</option><option value='correct'>Correct</option><option value='incorrect'>Incorrect</option></select> Search:",
-            lengthMenu = "Show _MENU_"
-          )
+          dom = "<'d-flex align-items-center gap-2 mb-2'f>ti<'d-flex align-items-center justify-content-between mt-2'lp>",
+          language = list(search = "Search:", lengthMenu = "Show _MENU_")
         ),
         rownames = FALSE, escape = FALSE, class = "table-dark",
         colnames = c("Timestamp", "Weight", "Age", "Height", "Predicted", "Actual", "Correct")
