@@ -79,7 +79,8 @@ Rscript -e "
       'outputs/model_metrics.csv',
       'outputs/confusion_matrix.csv',
       'www/styles.css',
-      'www/logo/logo.png'
+      'www/logo/logo.png',
+      list.files('outputs/figures', pattern = '.png$', full.names = TRUE)
     ),
     forceUpdate    = TRUE,
     launch.browser = FALSE

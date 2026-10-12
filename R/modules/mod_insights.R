@@ -100,10 +100,14 @@ insightsServer <- function(id, clean_data) {
       content  = function(file) {
         plots <- list.files("outputs/figures", pattern = "\\.png$", full.names = TRUE)
         if (length(plots) == 0) {
-          writeLines("No EDA plots found. Run R/03_exploratory_analysis.R first.", con = file)
+          writeLines("No EDA plots found.", con = file)
           return()
         }
-        zip(file, files = plots, flags = "-j")
+        # Use a temp dir so zip paths are clean (filenames only, no full paths)
+        tmp <- tempdir()
+        file.copy(plots, tmp, overwrite = TRUE)
+        tmp_files <- file.path(tmp, basename(plots))
+        utils::zip(zipfile = file, files = tmp_files, flags = "-j")
       },
       contentType = "application/zip"
     )
