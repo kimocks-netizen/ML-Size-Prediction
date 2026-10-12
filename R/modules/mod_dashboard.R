@@ -95,7 +95,7 @@ dashboardUI <- function(id) {
       div(class = "col-md-6 mb-3",
         div(class = "card p-4 h-100",
           div(class = "section-title", "Model Inputs & Output"),
-          div(class = "d-flex flex-wrap gap-2 mb-3",
+          div(class = "d-flex flex-nowrap gap-2 mb-3 align-items-center",
             tags$span(class = "input-pill",
               tags$span(style = "color:#06B6D4;", icon("scale-balanced")), " Weight (kg), ",
               tags$span(class = "pill-value", uiOutput(ns("pill_weight")))),

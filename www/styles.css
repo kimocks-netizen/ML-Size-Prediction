@@ -528,6 +528,7 @@ table.dataTable tbody tr:hover {
   font-size: 0.82rem;
   color: #94A3B8;
   font-weight: 500;
+  white-space: nowrap;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 .input-pill:hover {
