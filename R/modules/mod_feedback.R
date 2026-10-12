@@ -76,11 +76,12 @@ feedbackUI <- function(id) {
   )
 }
 
-feedbackServer <- function(id) {
+feedbackServer <- function(id, feedback_trigger) {
   moduleServer(id, function(input, output, session) {
 
     fb_data <- reactive({
       input$fb_refresh
+      feedback_trigger()  # auto-refresh when predict tab saves feedback
       if (!file.exists(FEEDBACK_PATH)) return(NULL)
       df <- tryCatch(
         read.csv(FEEDBACK_PATH, stringsAsFactors = FALSE),

@@ -75,11 +75,16 @@ ui <- page_navbar(
 # SERVER
 # =============================================================================
 server <- function(input, output, session) {
+  # Shared trigger — incremented by predictServer after every feedback save
+  # feedbackServer watches it so the table auto-refreshes
+  feedback_trigger <- reactiveVal(0)
+
   dashboardServer("dashboard", clean_data = clean_data, model_ready = model_ready)
-  predictServer("predict",     model = model,           model_ready = model_ready)
+  predictServer("predict",     model = model, model_ready = model_ready,
+                               feedback_trigger = feedback_trigger)
   modelServer("model",         model_ready = model_ready)
   insightsServer("insights",   clean_data = clean_data)
-  feedbackServer("feedback")
+  feedbackServer("feedback",   feedback_trigger = feedback_trigger)
   # aboutUI is static — no server needed
 }
 

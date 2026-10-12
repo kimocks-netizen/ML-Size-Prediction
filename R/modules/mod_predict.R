@@ -48,7 +48,7 @@ predictUI <- function(id) {
   )
 }
 
-predictServer <- function(id, model, model_ready) {
+predictServer <- function(id, model, model_ready, feedback_trigger) {
   moduleServer(id, function(input, output, session) {
 
     rv <- reactiveValues(prediction = NULL, feedback_done = FALSE)
@@ -225,6 +225,7 @@ predictServer <- function(id, model, model_ready) {
         input$weight, input$age, input$height,
         rv$prediction$predicted_size, rv$prediction$predicted_size)
       rv$feedback_done <- TRUE
+      feedback_trigger(feedback_trigger() + 1)
     })
 
     observeEvent(input$fb_submit, {
@@ -233,6 +234,7 @@ predictServer <- function(id, model, model_ready) {
         input$weight, input$age, input$height,
         rv$prediction$predicted_size, input$actual_size)
       rv$feedback_done <- TRUE
+      feedback_trigger(feedback_trigger() + 1)
     })
   })
 }
