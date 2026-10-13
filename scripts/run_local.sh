@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
-# scripts/run_local.sh
+# cd scripts
+# bash run_local.sh
 # Run the Shiny app locally
 # Usage: bash scripts/run_local.sh
 # =============================================================================
